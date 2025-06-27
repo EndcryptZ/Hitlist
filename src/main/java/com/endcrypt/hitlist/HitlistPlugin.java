@@ -1,20 +1,38 @@
 package com.endcrypt.hitlist;
 
+import com.endcrypt.hitlist.bounty.BountyManager;
+import com.endcrypt.hitlist.commands.CommandManager;
+import com.endcrypt.hitlist.config.ConfigManager;
+import com.endcrypt.hitlist.player.PlayerManager;
+import com.endcrypt.hitlist.storage.PlayerStorage;
+import com.endcrypt.hitlist.storage.StorageManager;
 import com.samjakob.spigui.SpiGUI;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import lombok.Getter;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 @Getter
 public final class HitlistPlugin extends JavaPlugin {
 
     public static HitlistPlugin instance;
 
+
     private SpiGUI spiGUI;
     private Economy econ;
+
+    // Instances
+    BountyManager bountyManager;
+    PlayerManager playerManager;
+    ConfigManager configManager;
+    CommandManager commandManager;
+    StorageManager storageManager;
 
     @Override
     public void onLoad() {
@@ -28,13 +46,15 @@ public final class HitlistPlugin extends JavaPlugin {
     public void onEnable() {
         CommandAPI.onEnable();
         this.initializeInstances();
-        this.setupEconomy();
-        // Plugin startup logic
+        this.initializeEconomy();
+        this.commandManager.registerCommands();
+        this.playerManager.loadPlayers(); // For reloading the plugin
 
     }
 
     @Override
     public void onDisable() {
+        CommandAPI.onDisable();
         // Plugin shutdown logic
     }
 
@@ -42,23 +62,34 @@ public final class HitlistPlugin extends JavaPlugin {
     private void initializeInstances() {
 
         spiGUI = new SpiGUI(this);
+        bountyManager = new BountyManager();
+        playerManager = new PlayerManager();
+        configManager = new ConfigManager();
+        storageManager = new StorageManager();
+
+
     }
 
-    private void setupEconomy() {
+    private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return;
+            return false;
         }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            return;
+            return false;
         }
-
         econ = rsp.getProvider();
+        return econ != null;
+    }
 
-        if(!econ.isEnabled() || econ == null) {
-            getServer().getLogger().severe("&cCouldn't find any economy provider plugin. Disabling the Plugin...");
+    private void initializeEconomy() {
+        if (!setupEconomy() ) {
+            getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
             getServer().getPluginManager().disablePlugin(this);
         }
+    }
 
+    public void sendMessage(Player recipient, String message) {
+        recipient.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(configManager.getMessages().getPrefix() + " " + message));
     }
 }
