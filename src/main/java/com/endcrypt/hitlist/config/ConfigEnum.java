@@ -39,13 +39,21 @@ public enum ConfigEnum {
 
     // Messages
     MESSAGE_PREFIX("messages.prefix"),
-    MESSAGE_BOUNTY_PLACED("messages.bounty-placed"),
+    MESSAGE_PLACE_BOUNTY("messages.place-bounty"),
+    MESSAGE_STACK_BOUNTY("messages.stack-bounty"),
     MESSAGE_BOUNTY_CLAIMED("messages.bounty-claimed"),
     MESSAGE_OPT_IN_SUCCESS("messages.opt-in-success"),
     MESSAGE_OPT_OUT_SUCCESS("messages.opt-out-success"),
     MESSAGE_COOLDOWN_ACTIVE("messages.cooldown-active"),
     MESSAGE_BOUNTY_EXPIRED("messages.bounty-expired"),
-    MESSAGE_SELF_BOUNTY("messages.self-bounty");
+
+    // Error Messages
+    ERROR_MESSAGE_SELF_BOUNTY("messages.error-self-bounty"),
+    ERROR_MESSAGE_ACTIVE_BOUNTY("messages.error-target-already-have-bounty"),
+    ERROR_MESSAGE_NOT_ENOUGH_MONEY("messages.error-not-enough-money"),
+
+    // System Messages
+    SYSTEM_MESSAGE_CONFIG_RELOAD("messages.system-config-reload");
 
     private final String path;
 

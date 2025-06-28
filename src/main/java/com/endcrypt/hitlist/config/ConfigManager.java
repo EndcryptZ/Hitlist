@@ -51,6 +51,7 @@ public class ConfigManager {
     public void reloadConfigs() {
         loadConfig();
         loadMessages();
+        mainConfig = new MainConfig(config);
         messages = new MessagesConfig(messagesConfig);
     }
 

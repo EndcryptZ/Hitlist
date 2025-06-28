@@ -37,8 +37,14 @@ public class MessagesConfig {
         return colorize(formatted);
     }
 
-    public String getBountyPlaced(String target, String amount) {
-        return format(getString(ConfigEnum.MESSAGE_BOUNTY_PLACED),
+    public String getPlaceBounty(String target, String amount) {
+        return format(getString(ConfigEnum.MESSAGE_PLACE_BOUNTY),
+                "%target%", target,
+                "%amount%", amount);
+    }
+
+    public String getStackBounty(String target, String amount) {
+        return format(getString(ConfigEnum.MESSAGE_STACK_BOUNTY),
                 "%target%", target,
                 "%amount%", amount);
     }
@@ -67,7 +73,20 @@ public class MessagesConfig {
                 "%target%", target);
     }
 
-    public String getSelfBounty() {
-        return format(getString(ConfigEnum.MESSAGE_SELF_BOUNTY));
+    public String getErrorSelfBounty() {
+        return format(getString(ConfigEnum.ERROR_MESSAGE_SELF_BOUNTY));
+    }
+
+    public String getErrorActiveBounty(String target) {
+        return format(getString(ConfigEnum.ERROR_MESSAGE_ACTIVE_BOUNTY),
+                "%target%", target);
+    }
+
+    public String getErrorNotEnoughMoney() {
+        return format(getString(ConfigEnum.ERROR_MESSAGE_NOT_ENOUGH_MONEY));
+    }
+
+    public String getSystemConfigReload() {
+        return format(getString(ConfigEnum.SYSTEM_MESSAGE_CONFIG_RELOAD));
     }
 }

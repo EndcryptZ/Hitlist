@@ -8,5 +8,6 @@ public class CommandManager {
 
     public void registerCommands() {
         new BountyCommand();
+        new HitlistCommand();
     }
 }

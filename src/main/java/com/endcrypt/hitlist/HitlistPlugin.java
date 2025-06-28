@@ -4,7 +4,6 @@ import com.endcrypt.hitlist.bounty.BountyManager;
 import com.endcrypt.hitlist.commands.CommandManager;
 import com.endcrypt.hitlist.config.ConfigManager;
 import com.endcrypt.hitlist.player.PlayerManager;
-import com.endcrypt.hitlist.storage.PlayerStorage;
 import com.endcrypt.hitlist.storage.StorageManager;
 import com.samjakob.spigui.SpiGUI;
 import dev.jorel.commandapi.CommandAPI;
@@ -47,7 +46,6 @@ public final class HitlistPlugin extends JavaPlugin {
         CommandAPI.onEnable();
         this.initializeInstances();
         this.initializeEconomy();
-        this.commandManager.registerCommands();
         this.playerManager.loadPlayers(); // For reloading the plugin
 
     }
@@ -66,6 +64,7 @@ public final class HitlistPlugin extends JavaPlugin {
         playerManager = new PlayerManager();
         configManager = new ConfigManager();
         storageManager = new StorageManager();
+        commandManager = new CommandManager();
 
 
     }
@@ -90,6 +89,6 @@ public final class HitlistPlugin extends JavaPlugin {
     }
 
     public void sendMessage(Player recipient, String message) {
-        recipient.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(configManager.getMessages().getPrefix() + " " + message));
+        recipient.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(message));
     }
 }

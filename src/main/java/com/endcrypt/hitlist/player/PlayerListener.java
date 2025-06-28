@@ -15,13 +15,11 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerDataLoad(PlayerJoinEvent event) {
-        PlayerData playerData = new PlayerData(event.getPlayer().getUniqueId());
-        plugin.getPlayerManager().addPlayer(event.getPlayer(), playerData);
+        plugin.getPlayerManager().loadPlayer(event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerDataUnload(PlayerQuitEvent event) {
-
-        plugin.getPlayerManager().removePlayer(event.getPlayer());
+        plugin.getPlayerManager().savePlayer(event.getPlayer());
     }
 }
