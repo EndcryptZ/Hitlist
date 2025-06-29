@@ -1,13 +1,16 @@
 package com.endcrypt.hitlist.bounty;
 
 import com.endcrypt.hitlist.HitlistPlugin;
-import com.endcrypt.hitlist.player.PlayerData;
 import com.endcrypt.hitlist.utils.EconomyUtils;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class BountyManager {
 
     private static final HitlistPlugin plugin = HitlistPlugin.instance;
+    private final Map<Player, BountyData> activeBounties = new HashMap<>();
 
     public BountyManager() {
     }
@@ -27,7 +30,7 @@ public class BountyManager {
         }
 
         boolean isStacking = plugin.getConfigManager().getMainConfig().isStackingEnabled();
-        boolean hasActiveBounty = targetData.getBounty() != null && targetData.getBounty().isActive();
+        boolean hasActiveBounty = targetData.getBounty() != null;
 
         // Check if target already has an active bounty and stacking is disabled
         if (!isStacking && hasActiveBounty) {
@@ -36,12 +39,12 @@ public class BountyManager {
         }
 
         // Create new bounty data
-        BountyData bountyData = new BountyData(placer.getUniqueId(), amount, false);
+        BountyData bountyData = new BountyData(target.getUniqueId(), placer.getUniqueId(), amount, false);
 
         // Handle stacking if enabled
         if (isStacking && hasActiveBounty) {
             double newAmount = targetData.getBounty().getAmount() + amount;
-            bountyData = new BountyData(placer.getUniqueId(), newAmount, false);
+            bountyData = new BountyData(target.getUniqueId(), placer.getUniqueId(), newAmount, false);
             plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getStackBounty(target.getName(), String.valueOf(amount)));
         } else {
             plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getPlaceBounty(target.getName(), String.valueOf(amount)));
@@ -51,7 +54,6 @@ public class BountyManager {
         EconomyUtils.withdraw(placer, amount);
         targetData.setBounty(bountyData);
         plugin.getPlayerManager().addPlayer(target, targetData);
-        plugin.getStorageManager().getPlayerStorage().setPlayerBounty(target.getUniqueId(), bountyData);
     }
 
 

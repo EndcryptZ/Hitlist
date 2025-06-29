@@ -3,7 +3,6 @@ package com.endcrypt.hitlist;
 import com.endcrypt.hitlist.bounty.BountyManager;
 import com.endcrypt.hitlist.commands.CommandManager;
 import com.endcrypt.hitlist.config.ConfigManager;
-import com.endcrypt.hitlist.player.PlayerManager;
 import com.endcrypt.hitlist.storage.StorageManager;
 import com.samjakob.spigui.SpiGUI;
 import dev.jorel.commandapi.CommandAPI;
@@ -14,8 +13,6 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
 
 @Getter
 public final class HitlistPlugin extends JavaPlugin {
@@ -28,7 +25,6 @@ public final class HitlistPlugin extends JavaPlugin {
 
     // Instances
     BountyManager bountyManager;
-    PlayerManager playerManager;
     ConfigManager configManager;
     CommandManager commandManager;
     StorageManager storageManager;
@@ -46,7 +42,6 @@ public final class HitlistPlugin extends JavaPlugin {
         CommandAPI.onEnable();
         this.initializeInstances();
         this.initializeEconomy();
-        this.playerManager.loadPlayers(); // For reloading the plugin
 
     }
 
@@ -61,7 +56,6 @@ public final class HitlistPlugin extends JavaPlugin {
 
         spiGUI = new SpiGUI(this);
         bountyManager = new BountyManager();
-        playerManager = new PlayerManager();
         configManager = new ConfigManager();
         storageManager = new StorageManager();
         commandManager = new CommandManager();
