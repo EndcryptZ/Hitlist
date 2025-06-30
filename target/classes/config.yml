@@ -1,0 +1,45 @@
+# === Bounty Rules ===
+bounty:
+  min-amount: 100.0
+  max-amount: 100000.0
+  placement-fee:
+    enabled: true
+    amount: 50.0
+  stacking:
+    enabled: true
+  expiration:
+    enabled: true
+    time: 7d # 7 days; supports h/m/s/d notation
+  anonymous:
+    enabled: true
+
+# === Player Opt-In Settings ===
+opt-in:
+  cooldown:
+    time: 30d
+    count-only-while-online: true
+
+# === Claim Settings ===
+claim:
+  cooldown:
+    enabled: true
+    time: 10s # Prevent spam
+
+# === Player Head Drop ===
+head-drop:
+  enabled: true
+
+# === Staff Settings ===
+staff:
+  can-remove-bounties: true # Permission: hitlist.bounty.remove
+  refund-on-removal: true
+
+# === Limits ===
+limits:
+  max-active-bounties:
+    default: 3 # Permission: hitlist.bounty.max.default
+
+# === Economy ===
+economy:
+  plugin: Vault
+  integration-enabled: true

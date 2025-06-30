@@ -1,0 +1,22 @@
+# === Messages ===
+messages:
+  prefix: "&6[Hitlist] &r"
+  bounty-place: "&aYou placed a bounty on %target% for $%amount%!"
+  bounty-place-stack: "&aYou added $%amount% to the bounty on %target%!"
+  bounty-claimed: "&e%killer% claimed the bounty on %target%!"
+  opt-in-success: "&aYou have opted in to be a bounty target."
+  opt-out-success: "&cYou have opted out from being a bounty target."
+  cooldown-active: "&cYou cannot change your bounty opt-in status for another %time%."
+  bounty-expired: "&eThe bounty on %target% has expired."
+  bounty-remove: "&aThe bounty on %target% has been removed."
+
+# === Error Messages ===
+  error-self-bounty: "&cYou can't place a bounty on yourself"
+  error-target-already-have-bounty: "&c%target% already have a bounty!"
+  error-not-enough-money: "&cYou don't have enough money to place this bounty!"
+
+# === Permission Messages ===
+  no-permission-bounty-remove-others: "&cYou don't have permission to remove bounties placed by other players!"
+  
+# === System Messages ===
+  system-config-reload: "&aConfiguration reloaded successfully!"
