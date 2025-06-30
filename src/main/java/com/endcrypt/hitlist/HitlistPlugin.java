@@ -3,6 +3,7 @@ package com.endcrypt.hitlist;
 import com.endcrypt.hitlist.bounty.BountyManager;
 import com.endcrypt.hitlist.commands.CommandManager;
 import com.endcrypt.hitlist.config.ConfigManager;
+import com.endcrypt.hitlist.permissions.PermissionManager;
 import com.endcrypt.hitlist.storage.StorageManager;
 import com.samjakob.spigui.SpiGUI;
 import dev.jorel.commandapi.CommandAPI;
@@ -28,6 +29,7 @@ public final class HitlistPlugin extends JavaPlugin {
     ConfigManager configManager;
     CommandManager commandManager;
     StorageManager storageManager;
+    PermissionManager permissionManager;
 
     @Override
     public void onLoad() {
@@ -55,10 +57,11 @@ public final class HitlistPlugin extends JavaPlugin {
     private void initializeInstances() {
 
         spiGUI = new SpiGUI(this);
+        storageManager = new StorageManager();
         bountyManager = new BountyManager();
         configManager = new ConfigManager();
-        storageManager = new StorageManager();
         commandManager = new CommandManager();
+        permissionManager = new PermissionManager();
 
 
     }

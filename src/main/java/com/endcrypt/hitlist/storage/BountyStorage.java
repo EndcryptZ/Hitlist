@@ -2,6 +2,8 @@
 package com.endcrypt.hitlist.storage;
 
 import com.endcrypt.hitlist.bounty.BountyData;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -63,19 +65,20 @@ public class BountyStorage {
         }
     }
 
-    public Map<UUID, BountyData> loadAllBounties() {
-        Map<UUID, BountyData> bounties = new HashMap<>();
+    public Map<OfflinePlayer, BountyData> loadAllBounties() {
+        Map<OfflinePlayer, BountyData> bounties = new HashMap<>();
         for (String uuidStr : config.getKeys(false)) {
             try {
                 UUID targetId = UUID.fromString(uuidStr);
                 BountyData bounty = loadBounty(targetId);
                 if (bounty != null) {
-                    bounties.put(targetId, bounty);
+                    bounties.put(Bukkit.getOfflinePlayer(targetId), bounty);
                 }
             } catch (IllegalArgumentException e) {
                 logger.log(Level.WARNING, "Invalid UUID in bounties.yml: " + uuidStr);
             }
         }
+        logger.log(Level.INFO, "Loaded " + bounties.size() + " bounties from bounties.yml");
         return bounties;
     }
 
