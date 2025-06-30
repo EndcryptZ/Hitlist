@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum PermissionsEnum {
 
-    PERMISSION_BOUNTY_REMOVE_OTHERS("hitlist.bounty-remove-others");
+    PERMISSION_BOUNTY_EDIT_OTHERS("hitlist.bounty.edit.others"),
+    PERMISSION_BOUNTY_PLACE_LIMIT("hitlist.bounty.place.limit");
 
 
     private final String permission;

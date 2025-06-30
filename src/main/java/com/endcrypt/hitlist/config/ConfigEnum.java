@@ -15,9 +15,12 @@ public enum ConfigEnum {
     BOUNTY_EXPIRATION_TIME("bounty.expiration.time"),
     BOUNTY_ANONYMOUS_ENABLED("bounty.anonymous.enabled"),
 
-    // Player Opt-In Settings
+    // Player Opt-In/Out Settings
+    AUTO_OPT_OUT_ON_FIRST_JOIN("auto-opt-out-on-first-join"),
     OPT_IN_COOLDOWN_TIME("opt-in.cooldown.time"),
     OPT_IN_COOLDOWN_COUNT_ONLINE("opt-in.cooldown.count-only-while-online"),
+    OPT_OUT_COOLDOWN_TIME("opt-out.cooldown.time"),
+    OPT_OUT_COOLDOWN_COUNT_ONLINE("opt-out.cooldown.count-only-while-online"),
 
     // Claim Settings
     CLAIM_COOLDOWN_ENABLED("claim.cooldown.enabled"),
@@ -29,9 +32,6 @@ public enum ConfigEnum {
     // Staff Settings
     STAFF_CAN_REMOVE_BOUNTIES("staff.can-remove-bounties"),
     STAFF_REFUND_ON_REMOVAL("staff.refund-on-removal"),
-
-    // Limits
-    LIMITS_MAX_ACTIVE_BOUNTIES_DEFAULT("limits.max-active-bounties.default"),
 
     // Economy Settings
     ECONOMY_PLUGIN("economy.plugin"),
@@ -47,14 +47,19 @@ public enum ConfigEnum {
     MESSAGE_COOLDOWN_ACTIVE("messages.cooldown-active"),
     MESSAGE_BOUNTY_EXPIRED("messages.bounty-expired"),
     MESSAGE_BOUNTY_REMOVE("messages.bounty-remove"),
+    MESSAGE_BOUNTY_LOWER("messages.bounty-lower"),
 
     // Error Messages
+    ERROR_MESSAGE_MAX_AMOUNT("messages.error-max-amount"),
+    ERROR_MESSAGE_MIN_AMOUNT("messages.error-min-amount"),
     ERROR_MESSAGE_SELF_BOUNTY("messages.error-self-bounty"),
     ERROR_MESSAGE_ACTIVE_BOUNTY("messages.error-target-already-have-bounty"),
     ERROR_MESSAGE_NOT_ENOUGH_MONEY("messages.error-not-enough-money"),
+    ERROR_MESSAGE_NOT_ENOUGH_PLACED_MONEY("messages.error-not-enough-placed-money"),
+    ERROR_MESSAGE_MAX_BOUNTIES_LIMIT("messages.error-max-bounties-limit"),
 
     // Permission Messages
-    NO_PERMISSION_BOUNTY_REMOVE_OTHERS("messages.no-permission-bounty-remove-others"),
+    NO_PERMISSION_BOUNTY_EDIT_OTHERS("messages.no-permission-bounty-edit-others"),
 
     // System Messages
     SYSTEM_MESSAGE_CONFIG_RELOAD("messages.system-config-reload");

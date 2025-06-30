@@ -11,6 +11,7 @@ import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import lombok.Getter;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -87,5 +88,9 @@ public final class HitlistPlugin extends JavaPlugin {
 
     public void sendMessage(Player recipient, String message) {
         recipient.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(message));
+    }
+
+    public void commandSenderMessage(CommandSender sender, String message) {
+        sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(message));
     }
 }

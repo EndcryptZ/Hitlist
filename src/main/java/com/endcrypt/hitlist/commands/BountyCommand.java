@@ -32,16 +32,20 @@ public class BountyCommand {
                 .withSubcommand(new CommandAPICommand("place")
                         .withArguments(new EntitySelectorArgument.OnePlayer("target"))
                         .withArguments(new DoubleArgument("amount"))
-                        .executes(this::place))
+                        .executesPlayer(this::place))
 
                 .withSubcommand(new CommandAPICommand("list")
                         .withArguments(new IntegerArgument("page", 1).setOptional(true))
                 .executes(this::list))
 
-                .withSubcommand(new CommandAPICommand("remove")
-                        .withArguments(new BountyTargetArgument())
-                        .executes(this::remove))
-
+                .withSubcommand(new CommandAPICommand("edit")
+                        .withSubcommand(new CommandAPICommand("remove")
+                                .withArguments(new BountyTargetArgument())
+                                .executesPlayer(this::remove))
+                        .withSubcommand(new CommandAPICommand("lower")
+                                .withArguments(new BountyTargetArgument())
+                                .withArguments(new DoubleArgument("amount"))
+                                .executesPlayer(this::lower)))
                 .register();
     }
 
@@ -109,6 +113,13 @@ public class BountyCommand {
     private void remove(CommandSender commandSender, CommandArguments args) {
         OfflinePlayer target = args.getUnchecked("target");
         plugin.getBountyManager().removeBounty(target, (Player) commandSender);
+    }
+
+    private void lower(CommandSender commandSender, CommandArguments args) {
+        OfflinePlayer target = args.getUnchecked("target");
+        double amount = args.getUnchecked("amount");
+
+        plugin.getBountyManager().lowerBounty(target, (Player) commandSender, amount);
 
     }
 }

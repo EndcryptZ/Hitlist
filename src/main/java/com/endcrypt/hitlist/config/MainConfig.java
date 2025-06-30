@@ -16,6 +16,7 @@ public class MainConfig {
         // Validate time formats
         validateTimeFormat(getExpirationTime(), "Expiration time");
         validateTimeFormat(getOptInCooldownTime(), "Opt-in cooldown time");
+        validateTimeFormat(getOptOutCooldownTime(), "Opt-out cooldown time");
         validateTimeFormat(getClaimCooldownTime(), "Claim cooldown time");
 
         // Validate numerical values
@@ -85,6 +86,20 @@ public class MainConfig {
         return config.getBoolean(ConfigEnum.OPT_IN_COOLDOWN_COUNT_ONLINE.getPath());
     }
 
+    // === Player Opt-Out Settings ===
+
+    public String getOptOutCooldownTime() {
+        return config.getString(ConfigEnum.OPT_OUT_COOLDOWN_TIME.getPath());
+    }
+
+    public long getOptOutCooldownTimeMillis() {
+        return TimeUtils.parseTime(getOptOutCooldownTime());
+    }
+
+    public boolean isOptOutCooldownCountOnlineOnly() {
+        return config.getBoolean(ConfigEnum.OPT_OUT_COOLDOWN_COUNT_ONLINE.getPath());
+    }
+
     // === Claim Settings ===
     public boolean isClaimCooldownEnabled() {
         return config.getBoolean(ConfigEnum.CLAIM_COOLDOWN_ENABLED.getPath());
@@ -110,11 +125,6 @@ public class MainConfig {
 
     public boolean isRefundOnRemovalEnabled() {
         return config.getBoolean(ConfigEnum.STAFF_REFUND_ON_REMOVAL.getPath());
-    }
-
-    // === Limits ===
-    public int getDefaultMaxActiveBounties() {
-        return config.getInt(ConfigEnum.LIMITS_MAX_ACTIVE_BOUNTIES_DEFAULT.getPath());
     }
 
     // === Economy Settings ===

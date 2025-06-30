@@ -1,5 +1,6 @@
 package com.endcrypt.hitlist.config;
 
+import com.endcrypt.hitlist.bounty.BountyData;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.ChatColor;
@@ -78,6 +79,21 @@ public class MessagesConfig {
                 "%target%", target);
     }
 
+    public String getBountyLower(String target, double amount, double newAmount) {
+        return format(getString(ConfigEnum.MESSAGE_BOUNTY_LOWER),
+                "%target%", target,
+                "%amount%", amount,
+                "%new_amount%", newAmount);
+    }
+
+    public String getErrorMaxAmount() {
+        return format(getString(ConfigEnum.ERROR_MESSAGE_MAX_AMOUNT));
+    }
+
+    public String getErrorMinAmount() {
+        return format(getString(ConfigEnum.ERROR_MESSAGE_MIN_AMOUNT));
+    }
+
     public String getErrorSelfBounty() {
         return format(getString(ConfigEnum.ERROR_MESSAGE_SELF_BOUNTY));
     }
@@ -87,12 +103,23 @@ public class MessagesConfig {
                 "%target%", target);
     }
 
-    public String getErrorNotEnoughMoney() {
-        return format(getString(ConfigEnum.ERROR_MESSAGE_NOT_ENOUGH_MONEY));
+    public String getErrorNotEnoughMoney(double requiredAmount) {
+        return format(getString(ConfigEnum.ERROR_MESSAGE_NOT_ENOUGH_MONEY),
+                "%required_money%", requiredAmount);
     }
 
-    public String getNoPermissionBountyCancelOthers() {
-        return format(getString(ConfigEnum.NO_PERMISSION_BOUNTY_REMOVE_OTHERS));
+    public String getErrorNotEnoughPlacedMoney(double placedAmount) {
+        return format(getString(ConfigEnum.ERROR_MESSAGE_NOT_ENOUGH_PLACED_MONEY),
+                "%placed_money%", placedAmount);
+    }
+
+    public String getErrorMaxBountiesLimit(int limit) {
+        return format(getString(ConfigEnum.ERROR_MESSAGE_MAX_BOUNTIES_LIMIT),
+                "%limit%", limit);
+    }
+
+    public String getNoPermissionBountyEditOthers() {
+        return format(getString(ConfigEnum.NO_PERMISSION_BOUNTY_EDIT_OTHERS));
     }
 
     public String getSystemConfigReload() {

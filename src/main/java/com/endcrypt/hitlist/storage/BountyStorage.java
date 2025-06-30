@@ -41,6 +41,7 @@ public class BountyStorage {
     public void saveBounty(BountyData bounty) {
         String path = bounty.getTargetId().toString();
         config.set(path + ".placerId", bounty.getPlacerId().toString());
+        config.set(path + ".placedAmount", bounty.getPlacedAmount());
         config.set(path + ".amount", bounty.getAmount());
         config.set(path + ".placementTime", bounty.getPlacementTime());
         config.set(path + ".anonymous", bounty.isAnonymous());
@@ -55,10 +56,11 @@ public class BountyStorage {
 
         try {
             UUID placerId = UUID.fromString(config.getString(path + ".placerId"));
+            double placedAmount = config.getDouble(path + ".placedAmount");
             double amount = config.getDouble(path + ".amount");
             boolean anonymous = config.getBoolean(path + ".anonymous");
 
-            return new BountyData(targetId, placerId, amount, anonymous);
+            return new BountyData(targetId, placerId, placedAmount, amount, anonymous);
         } catch (IllegalArgumentException e) {
             logger.log(Level.WARNING, "Failed to load bounty for target " + targetId, e);
             return null;

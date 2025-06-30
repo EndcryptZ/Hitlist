@@ -21,59 +21,203 @@ public class BountyManager {
     }
 
 
+    /**
+     * Places a bounty on a target player by a placer.
+     *
+     * Handles max bounty limits, amount validation, economy checks,
+     * stacking behavior, and active bounty state.
+     */
     public void placeBounty(Player target, Player placer, double amount) {
-        if(target == placer) {
-            String message = plugin.getConfigManager().getMessages().getErrorSelfBounty();
-            plugin.sendMessage(placer, message);
+        double placementFee = 0;
+        int placerBountyCount = 0;
+
+        // Get the max number of bounties this player can place based on permission
+        int limit = plugin.getPermissionManager().getMaxBountiesAllowed(placer);
+
+        // If placement fee is enabled, retrieve the fee amount
+        if (plugin.getConfigManager().getMainConfig().isPlacementFeeEnabled()) {
+            placementFee = plugin.getConfigManager().getMainConfig().getPlacementFeeAmount();
+        }
+
+        // Count the number of active bounties this player has placed
+        for (BountyData bountyData : activeBounties.values()) {
+            if (bountyData.getPlacerId() == placer.getUniqueId()) {
+                placerBountyCount++;
+            }
+
+            // If they've reached the limit, cancel the bounty placement
+            if (placerBountyCount >= limit) {
+                plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorMaxBountiesLimit(limit));
+                return;
+            }
+        }
+
+        // Prevent placing a bounty on oneself
+        if (target == placer) {
+            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorSelfBounty());
             return;
         }
 
-        if(!EconomyUtils.hasEnoughMoney(placer, amount)) {
-            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorNotEnoughMoney());
+        // Check if the bounty amount is within allowed bounds
+        if (amount > plugin.getConfigManager().getMainConfig().getMaxBountyAmount()) {
+            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorMaxAmount());
+            return;
+        }
+
+        if (amount < plugin.getConfigManager().getMainConfig().getMinBountyAmount()) {
+            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorMinAmount());
+            return;
+        }
+
+        // Verify the player has enough money to cover the bounty + fee
+        if (!EconomyUtils.hasEnoughMoney(placer, amount + placementFee)) {
+            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorNotEnoughMoney(amount + placementFee));
             return;
         }
 
         boolean isStacking = plugin.getConfigManager().getMainConfig().isStackingEnabled();
         boolean hasActiveBounty = activeBounties.containsKey(target);
 
-        // Check if target already has an active bounty and stacking is disabled
+        // If stacking is disabled and the target already has a bounty, cancel
         if (!isStacking && hasActiveBounty) {
             plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorActiveBounty(target.getName()));
             return;
         }
 
-        // Create new bounty data
-        BountyData bountyData = activeBounties.getOrDefault(target, new BountyData(target.getUniqueId(), placer.getUniqueId(), amount, false));
+        // Get or create bounty data for the target
+        BountyData bountyData = activeBounties.getOrDefault(
+                target,
+                new BountyData(target.getUniqueId(), placer.getUniqueId(), amount, amount, false)
+        );
 
-        // Handle stacking if enabled
+        // Handle bounty stacking logic
         if (isStacking && hasActiveBounty) {
             double newAmount = bountyData.getAmount() + amount;
-            bountyData = new BountyData(target.getUniqueId(), placer.getUniqueId(), newAmount, false);
-            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getBountyPlaceStack(target.getName(), String.valueOf(amount)));
+
+            // If the current placer is different from the original placer
+            if (!placer.getUniqueId().equals(bountyData.getPlacerId())) {
+                bountyData = new BountyData(
+                        target.getUniqueId(),
+                        bountyData.getPlacerId(),
+                        bountyData.getPlacedAmount(),
+                        newAmount,
+                        false
+                );
+            } else {
+                bountyData = new BountyData(
+                        target.getUniqueId(),
+                        placer.getUniqueId(),
+                        bountyData.getPlacedAmount() + amount,
+                        newAmount,
+                        false
+                );
+            }
+
+            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getBountyPlaceStack(
+                    target.getName(), String.valueOf(amount)
+            ));
         } else {
-            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getBountyPlace(target.getName(), String.valueOf(amount)));
+            // New bounty without stacking
+            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getBountyPlace(
+                    target.getName(), String.valueOf(amount)
+            ));
         }
 
-        // Set the bounty
-        EconomyUtils.withdraw(placer, amount);
+        // Withdraw the money and save the bounty
+        EconomyUtils.withdraw(placer, amount + placementFee);
         plugin.getStorageManager().getBountyStorage().saveBounty(bountyData);
         activeBounties.put(target, bountyData);
     }
 
+    /**
+     * Removes an active bounty on a target player.
+     * Validates permission if the canceller is not the original placer.
+     * Optionally refunds the bounty amount based on config.
+     *
+     * @param target The player who has the bounty.
+     * @param canceller The player attempting to remove the bounty.
+     */
     public void removeBounty(OfflinePlayer target, Player canceller) {
+        // Retrieve bounty data associated with the target
         BountyData bountyData = activeBounties.get(target);
+
+        // Get the original placer of the bounty
         OfflinePlayer placer = Bukkit.getOfflinePlayer(bountyData.getPlacerId());
 
-        if(!canceller.hasPermission(PermissionsEnum.PERMISSION_BOUNTY_REMOVE_OTHERS.getPermission()) && placer != canceller) {
-            plugin.sendMessage(canceller, plugin.getConfigManager().getMessages().getNoPermissionBountyCancelOthers());
+        // Check if the canceller has permission to remove bounties placed by others
+        boolean isCancellerPlacer = placer.getUniqueId().equals(canceller.getUniqueId());
+        if (!canceller.hasPermission(PermissionsEnum.PERMISSION_BOUNTY_EDIT_OTHERS.getPermission()) && !isCancellerPlacer) {
+            plugin.sendMessage(canceller, plugin.getConfigManager().getMessages().getNoPermissionBountyEditOthers());
             return;
         }
 
+        // Remove the bounty from memory and storage
         activeBounties.remove(target);
         plugin.getStorageManager().getBountyStorage().removeBounty(target.getUniqueId());
-        plugin.sendMessage(canceller, plugin.getConfigManager().getMessages().getBountyRemove(target.getName()));
 
+        // Notify the canceller
+        plugin.commandSenderMessage(canceller, plugin.getConfigManager().getMessages().getBountyRemove(target.getName()));
+
+        // Refund the bounty to the target player if refunding is enabled
+        if (plugin.getConfigManager().getMainConfig().isRefundOnRemovalEnabled()) {
+            EconomyUtils.deposit(target, bountyData.getAmount());
+        }
     }
+
+    /**
+     * Lowers the bounty amount on a target player.
+     * Validates if the lowering player is allowed and ensures proper amount constraints.
+     * Refunds the lowered amount to the player.
+     *
+     * @param target The player whose bounty is being lowered.
+     * @param player The player requesting the bounty to be lowered.
+     * @param amount The amount to lower the bounty by.
+     */
+    public void lowerBounty(OfflinePlayer target, Player player, double amount) {
+        // Retrieve the bounty data and original placer
+        BountyData bountyData = activeBounties.get(target);
+        OfflinePlayer placer = Bukkit.getOfflinePlayer(bountyData.getPlacerId());
+
+        // Only the placer or someone with edit permission can lower the bounty
+        boolean isPlacer = placer.getUniqueId().equals(player.getUniqueId());
+        if (!player.hasPermission(PermissionsEnum.PERMISSION_BOUNTY_EDIT_OTHERS.getPermission()) && !isPlacer) {
+            plugin.sendMessage(player, plugin.getConfigManager().getMessages().getNoPermissionBountyEditOthers());
+            return;
+        }
+
+        // Ensure the resulting bounty does not go below the minimum allowed
+        double newAmount = bountyData.getAmount() - amount;
+        if (newAmount < plugin.getConfigManager().getMainConfig().getMinBountyAmount()) {
+            plugin.sendMessage(player, plugin.getConfigManager().getMessages().getErrorMinAmount());
+            return;
+        }
+
+        // Ensure the player has enough "placed" money to reduce
+        double newPlacedAmount = bountyData.getPlacedAmount() - amount;
+        if (newPlacedAmount < 0) {
+            plugin.sendMessage(player, plugin.getConfigManager().getMessages().getErrorNotEnoughPlacedMoney(bountyData.getPlacedAmount()));
+            return;
+        }
+
+        // Update bounty values
+        bountyData.setPlacedAmount(newPlacedAmount);
+        bountyData.setAmount(newAmount);
+
+        // Refund the player
+        EconomyUtils.deposit(player, amount);
+
+        // Save updated bounty
+        activeBounties.put(target, bountyData);
+        plugin.getStorageManager().getBountyStorage().saveBounty(bountyData);
+
+        // Notify player
+        plugin.sendMessage(player, plugin.getConfigManager().getMessages().getBountyLower(
+                target.getName(),
+                amount,
+                newAmount
+        ));
+    }
+
 
 
 }

@@ -1,4 +1,4 @@
 package com.endcrypt.hitlist.storage;
 
-public class StatsStorage {
+public class PlayerStorage {
 }
