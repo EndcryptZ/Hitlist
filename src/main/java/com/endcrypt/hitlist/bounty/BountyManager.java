@@ -8,13 +8,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.Map;
+import java.util.*;
 
 @Getter
 public class BountyManager {
 
     private static final HitlistPlugin plugin = HitlistPlugin.instance;
-    private final Map<OfflinePlayer, BountyData> activeBounties;
+    private final Map<UUID, BountyData> activeBounties;
 
     public BountyManager() {
         activeBounties = plugin.getStorageManager().getBountyStorage().loadAllBounties();
@@ -23,7 +23,6 @@ public class BountyManager {
 
     /**
      * Places a bounty on a target player by a placer.
-     *
      * Handles max bounty limits, amount validation, economy checks,
      * stacking behavior, and active bounty state.
      */
@@ -34,9 +33,9 @@ public class BountyManager {
         // Get the max number of bounties this player can place based on permission
         int limit = plugin.getPermissionManager().getMaxBountiesAllowed(placer);
 
-        // If placement fee is enabled, retrieve the fee amount
-        if (plugin.getConfigManager().getMainConfig().isPlacementFeeEnabled()) {
-            placementFee = plugin.getConfigManager().getMainConfig().getPlacementFeeAmount();
+        // If a placement fee is enabled, retrieve the fee amount
+        if (plugin.getConfigManager().getMain().isPlacementFeeEnabled()) {
+            placementFee = plugin.getConfigManager().getMain().getPlacementFeeAmount();
         }
 
         // Count the number of active bounties this player has placed
@@ -59,13 +58,13 @@ public class BountyManager {
         }
 
         // Check if the bounty amount is within allowed bounds
-        if (amount > plugin.getConfigManager().getMainConfig().getMaxBountyAmount()) {
-            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorMaxAmount());
+        if (amount > plugin.getConfigManager().getMain().getMaxBountyAmount()) {
+            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorMaxAmount(String.valueOf(plugin.getConfigManager().getMain().getMaxBountyAmount())));
             return;
         }
 
-        if (amount < plugin.getConfigManager().getMainConfig().getMinBountyAmount()) {
-            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorMinAmount());
+        if (amount < plugin.getConfigManager().getMain().getMinBountyAmount()) {
+            plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorMinAmount(String.valueOf(plugin.getConfigManager().getMain().getMinBountyAmount())));
             return;
         }
 
@@ -75,8 +74,8 @@ public class BountyManager {
             return;
         }
 
-        boolean isStacking = plugin.getConfigManager().getMainConfig().isStackingEnabled();
-        boolean hasActiveBounty = activeBounties.containsKey(target);
+        boolean isStacking = plugin.getConfigManager().getMain().isStackingEnabled();
+        boolean hasActiveBounty = activeBounties.containsKey(target.getUniqueId());
 
         // If stacking is disabled and the target already has a bounty, cancel
         if (!isStacking && hasActiveBounty) {
@@ -86,12 +85,19 @@ public class BountyManager {
 
         // Get or create bounty data for the target
         BountyData bountyData = activeBounties.getOrDefault(
-                target,
-                new BountyData(target.getUniqueId(), placer.getUniqueId(), amount, amount, false)
+                target.getUniqueId(),
+                new BountyData(target.getUniqueId(), placer.getUniqueId(), new HashMap<>(), amount, false)
         );
+        Map<UUID, Double> placersMap = bountyData.getPlacersMap();
+        if(!placersMap.containsKey(placer.getUniqueId())) {
+            placersMap.put(placer.getUniqueId(), amount);
+        } else {
+            placersMap.replace(placer.getUniqueId(), placersMap.get(placer.getUniqueId()) + amount);
+        }
 
-        // Handle bounty stacking logic
+        // Handle bounty-stacking logic
         if (isStacking && hasActiveBounty) {
+            long placementTime = bountyData.getPlacementTime();
             double newAmount = bountyData.getAmount() + amount;
 
             // If the current placer is different from the original placer
@@ -99,7 +105,7 @@ public class BountyManager {
                 bountyData = new BountyData(
                         target.getUniqueId(),
                         bountyData.getPlacerId(),
-                        bountyData.getPlacedAmount(),
+                        placersMap,
                         newAmount,
                         false
                 );
@@ -107,12 +113,13 @@ public class BountyManager {
                 bountyData = new BountyData(
                         target.getUniqueId(),
                         placer.getUniqueId(),
-                        bountyData.getPlacedAmount() + amount,
+                        placersMap,
                         newAmount,
                         false
                 );
             }
 
+            bountyData.setPlacementTime(placementTime);
             plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getBountyPlaceStack(
                     target.getName(), String.valueOf(amount)
             ));
@@ -126,7 +133,7 @@ public class BountyManager {
         // Withdraw the money and save the bounty
         EconomyUtils.withdraw(placer, amount + placementFee);
         plugin.getStorageManager().getBountyStorage().saveBounty(bountyData);
-        activeBounties.put(target, bountyData);
+        activeBounties.put(target.getUniqueId(), bountyData);
     }
 
     /**
@@ -139,7 +146,7 @@ public class BountyManager {
      */
     public void removeBounty(OfflinePlayer target, Player canceller) {
         // Retrieve bounty data associated with the target
-        BountyData bountyData = activeBounties.get(target);
+        BountyData bountyData = activeBounties.get(target.getUniqueId());
 
         // Get the original placer of the bounty
         OfflinePlayer placer = Bukkit.getOfflinePlayer(bountyData.getPlacerId());
@@ -152,14 +159,14 @@ public class BountyManager {
         }
 
         // Remove the bounty from memory and storage
-        activeBounties.remove(target);
+        activeBounties.remove(target.getUniqueId());
         plugin.getStorageManager().getBountyStorage().removeBounty(target.getUniqueId());
 
         // Notify the canceller
         plugin.commandSenderMessage(canceller, plugin.getConfigManager().getMessages().getBountyRemove(target.getName()));
 
         // Refund the bounty to the target player if refunding is enabled
-        if (plugin.getConfigManager().getMainConfig().isRefundOnRemovalEnabled()) {
+        if (plugin.getConfigManager().getMain().isRefundOnRemovalEnabled()) {
             EconomyUtils.deposit(target, bountyData.getAmount());
         }
     }
@@ -175,7 +182,7 @@ public class BountyManager {
      */
     public void lowerBounty(OfflinePlayer target, Player player, double amount) {
         // Retrieve the bounty data and original placer
-        BountyData bountyData = activeBounties.get(target);
+        BountyData bountyData = activeBounties.get(target.getUniqueId());
         OfflinePlayer placer = Bukkit.getOfflinePlayer(bountyData.getPlacerId());
 
         // Only the placer or someone with edit permission can lower the bounty
@@ -187,27 +194,27 @@ public class BountyManager {
 
         // Ensure the resulting bounty does not go below the minimum allowed
         double newAmount = bountyData.getAmount() - amount;
-        if (newAmount < plugin.getConfigManager().getMainConfig().getMinBountyAmount()) {
-            plugin.sendMessage(player, plugin.getConfigManager().getMessages().getErrorMinAmount());
+        if (newAmount < plugin.getConfigManager().getMain().getMinBountyAmount()) {
+            plugin.sendMessage(player, plugin.getConfigManager().getMessages().getErrorMinAmount(String.valueOf(plugin.getConfigManager().getMain().getMinBountyAmount())));
             return;
         }
 
         // Ensure the player has enough "placed" money to reduce
-        double newPlacedAmount = bountyData.getPlacedAmount() - amount;
+        double newPlacedAmount = bountyData.getPlacersMap().get(player.getUniqueId()) - amount;
         if (newPlacedAmount < 0) {
-            plugin.sendMessage(player, plugin.getConfigManager().getMessages().getErrorNotEnoughPlacedMoney(bountyData.getPlacedAmount()));
+            plugin.sendMessage(player, plugin.getConfigManager().getMessages().getErrorNotEnoughPlacedMoney(bountyData.getPlacersMap().get(player.getUniqueId())));
             return;
         }
 
         // Update bounty values
-        bountyData.setPlacedAmount(newPlacedAmount);
+        bountyData.getPlacersMap().replace(player.getUniqueId(), newPlacedAmount);
         bountyData.setAmount(newAmount);
 
         // Refund the player
         EconomyUtils.deposit(player, amount);
 
         // Save updated bounty
-        activeBounties.put(target, bountyData);
+        activeBounties.put(target.getUniqueId(), bountyData);
         plugin.getStorageManager().getBountyStorage().saveBounty(bountyData);
 
         // Notify player

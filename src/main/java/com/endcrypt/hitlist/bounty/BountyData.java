@@ -3,6 +3,7 @@ package com.endcrypt.hitlist.bounty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -13,22 +14,11 @@ import java.util.UUID;
 @Getter
 @Setter
 public class BountyData {
-    // The UUID of the player who has the bounty on their head
     private final UUID targetId;
-
-    // The UUID of the player who placed the bounty
     private final UUID placerId;
-
-    // The specific amount of money this placer contributed to the bounty
-    private double placedAmount;
-
-    // The total bounty amount on the target (may include contributions from others)
+    private final Map<UUID, Double> placersMap;
     private double amount;
-
-    // The system timestamp of when the bounty was placed (milliseconds)
-    private final long placementTime;
-
-    // Whether the bounty was placed anonymously
+    private long placementTime;
     private final boolean anonymous;
 
     /**
@@ -36,14 +26,14 @@ public class BountyData {
      *
      * @param targetId     The UUID of the player being targeted
      * @param placerId     The UUID of the player placing the bounty
-     * @param placedAmount The amount of money the placer is contributing
+     * @param placersMap   The map of placer UUIDs to their bounty amounts on the target
      * @param amount       The total bounty amount on the target
      * @param anonymous    Whether the bounty was placed anonymously
      */
-    public BountyData(UUID targetId, UUID placerId, double placedAmount, double amount, boolean anonymous) {
+    public BountyData(UUID targetId, UUID placerId, Map<UUID, Double> placersMap, double amount, boolean anonymous) {
         this.targetId = targetId;
         this.placerId = placerId;
-        this.placedAmount = placedAmount;
+        this.placersMap = placersMap;
         this.amount = amount;
         this.placementTime = System.currentTimeMillis(); // Set current time as placement timestamp
         this.anonymous = anonymous;

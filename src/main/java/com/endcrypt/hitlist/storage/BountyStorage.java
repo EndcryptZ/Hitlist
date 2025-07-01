@@ -41,10 +41,12 @@ public class BountyStorage {
     public void saveBounty(BountyData bounty) {
         String path = bounty.getTargetId().toString();
         config.set(path + ".placerId", bounty.getPlacerId().toString());
-        config.set(path + ".placedAmount", bounty.getPlacedAmount());
         config.set(path + ".amount", bounty.getAmount());
         config.set(path + ".placementTime", bounty.getPlacementTime());
         config.set(path + ".anonymous", bounty.isAnonymous());
+        for (UUID uuid : bounty.getPlacersMap().keySet() ) {
+            config.set(path + ".placers." + uuid.toString(), bounty.getPlacersMap().get(uuid));
+        }
         save();
     }
 
@@ -56,25 +58,31 @@ public class BountyStorage {
 
         try {
             UUID placerId = UUID.fromString(config.getString(path + ".placerId"));
-            double placedAmount = config.getDouble(path + ".placedAmount");
             double amount = config.getDouble(path + ".amount");
             boolean anonymous = config.getBoolean(path + ".anonymous");
 
-            return new BountyData(targetId, placerId, placedAmount, amount, anonymous);
+            Map<UUID, Double> placersMap = new HashMap<>();
+            for (String uuidStr : config.getConfigurationSection(path + ".placers").getKeys(false)) {
+                UUID placerUuid = UUID.fromString(uuidStr);
+                double placerAmount = config.getDouble(path + ".placers." + uuidStr);
+                placersMap.put(placerUuid, placerAmount);
+            }
+
+            return new BountyData(targetId, placerId, placersMap, amount, anonymous);
         } catch (IllegalArgumentException e) {
             logger.log(Level.WARNING, "Failed to load bounty for target " + targetId, e);
             return null;
         }
     }
 
-    public Map<OfflinePlayer, BountyData> loadAllBounties() {
-        Map<OfflinePlayer, BountyData> bounties = new HashMap<>();
+    public Map<UUID, BountyData> loadAllBounties() {
+        Map<UUID, BountyData> bounties = new HashMap<>();
         for (String uuidStr : config.getKeys(false)) {
             try {
                 UUID targetId = UUID.fromString(uuidStr);
                 BountyData bounty = loadBounty(targetId);
                 if (bounty != null) {
-                    bounties.put(Bukkit.getOfflinePlayer(targetId), bounty);
+                    bounties.put(targetId, bounty);
                 }
             } catch (IllegalArgumentException e) {
                 logger.log(Level.WARNING, "Invalid UUID in bounties.yml: " + uuidStr);

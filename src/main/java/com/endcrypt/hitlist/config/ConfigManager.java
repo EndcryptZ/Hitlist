@@ -1,6 +1,7 @@
 package com.endcrypt.hitlist.config;
 
 import com.endcrypt.hitlist.HitlistPlugin;
+import com.endcrypt.hitlist.config.gui.GUIConfig;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -10,12 +11,16 @@ import java.io.IOException;
 @Getter
 public class ConfigManager {
     private final HitlistPlugin plugin;
-    private FileConfiguration config;
+    private FileConfiguration mainConfig;
     private FileConfiguration messagesConfig;
+    private FileConfiguration guiConfig;
     private File configFile;
     private File messagesFile;
-    private MainConfig mainConfig;
+    private File guiFile;
+    private MainConfig main;
     private MessagesConfig messages;
+    private GUIConfig gui;
+
 
     public ConfigManager() {
         this.plugin = HitlistPlugin.instance;
@@ -26,8 +31,10 @@ public class ConfigManager {
         loadDefaultConfigs();
         loadConfig();
         loadMessages();
-        mainConfig = new MainConfig(config);
+        loadGUI();
+        main = new MainConfig(mainConfig);
         messages = new MessagesConfig(messagesConfig);
+        gui = new GUIConfig(guiConfig);
     }
 
     private void loadDefaultConfigs() {
@@ -36,11 +43,14 @@ public class ConfigManager {
         if (!new File(plugin.getDataFolder(), "messages.yml").exists()) {
             plugin.saveResource("messages.yml", false);
         }
+        if (!new File(plugin.getDataFolder(), "gui.yml").exists()) {
+            plugin.saveResource("gui.yml", false);
+        }
     }
 
     private void loadConfig() {
         configFile = new File(plugin.getDataFolder(), "config.yml");
-        config = YamlConfiguration.loadConfiguration(configFile);
+        mainConfig = YamlConfiguration.loadConfiguration(configFile);
     }
 
     private void loadMessages() {
@@ -48,16 +58,24 @@ public class ConfigManager {
         messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
     }
 
+    private void loadGUI() {
+        guiFile = new File(plugin.getDataFolder(), "gui.yml");
+        guiConfig = YamlConfiguration.loadConfiguration(guiFile);
+    }
+
     public void reloadConfigs() {
         loadConfig();
         loadMessages();
-        mainConfig = new MainConfig(config);
+        loadGUI();
+        main = new MainConfig(mainConfig);
         messages = new MessagesConfig(messagesConfig);
+        gui = new GUIConfig(guiConfig);
+        plugin.getLogger().info("Reloaded Hitlist configs!");
     }
 
     public void saveConfig() {
         try {
-            config.save(configFile);
+            mainConfig.save(configFile);
         } catch (IOException e) {
             plugin.getLogger().severe("Could not save config.yml!");
             e.printStackTrace();
@@ -73,32 +91,40 @@ public class ConfigManager {
         }
     }
 
+    public void saveGUI() {
+        try {
+            guiConfig.save(guiFile);
+        } catch (IOException e) {
+            plugin.getLogger().severe("Could not save gui.yml!");
+        }
+    }
+
     // Config getters with type safety
     public double getDouble(ConfigEnum path) {
         if (path.isMessage()) {
             throw new IllegalArgumentException("Tried to access message config as main config: " + path);
         }
-        return config.getDouble(path.getPath());
+        return mainConfig.getDouble(path.getPath());
     }
 
     public boolean getBoolean(ConfigEnum path) {
         if (path.isMessage()) {
             throw new IllegalArgumentException("Tried to access message config as main config: " + path);
         }
-        return config.getBoolean(path.getPath());
+        return mainConfig.getBoolean(path.getPath());
     }
 
     public String getString(ConfigEnum path) {
         if (path.isMessage()) {
             throw new IllegalArgumentException("Tried to access message config as main config: " + path);
         }
-        return config.getString(path.getPath());
+        return mainConfig.getString(path.getPath());
     }
 
     public int getInt(ConfigEnum path) {
         if (path.isMessage()) {
             throw new IllegalArgumentException("Tried to access message config as main config: " + path);
         }
-        return config.getInt(path.getPath());
+        return mainConfig.getInt(path.getPath());
     }
 }

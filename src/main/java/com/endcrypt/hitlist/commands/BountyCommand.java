@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class BountyCommand {
 
@@ -50,7 +51,7 @@ public class BountyCommand {
     }
 
     private void bountyGUI(CommandSender commandSender, CommandArguments args) {
-        commandSender.sendMessage("This opens the Bounty GUI");
+        plugin.getGuiManager().getMainBountyGUI().open((Player) commandSender);
     }
 
     private void place(CommandSender commandSender, CommandArguments args) {
@@ -64,7 +65,7 @@ public class BountyCommand {
 
     private void list(CommandSender commandSender, CommandArguments args) {
         int page = (int) args.getOptional("page").orElse(1);
-        Map<OfflinePlayer, BountyData> bounties = plugin.getBountyManager().getActiveBounties();
+        Map<UUID, BountyData> bounties = plugin.getBountyManager().getActiveBounties();
 
         // Calculate total pages
         int totalBounties = bounties.size();
@@ -88,18 +89,18 @@ public class BountyCommand {
         commandSender.sendMessage("§7----------------------------------------");
 
         // Convert map entries to list for easier pagination
-        List<Map.Entry<OfflinePlayer, BountyData>> bountyList = new ArrayList<>(bounties.entrySet());
+        List<Map.Entry<UUID, BountyData>> bountyList = new ArrayList<>(bounties.entrySet());
 
         for (int i = startIndex; i < endIndex; i++) {
-            Map.Entry<OfflinePlayer, BountyData> entry = bountyList.get(i);
-            OfflinePlayer target = entry.getKey();
+            Map.Entry<UUID, BountyData> entry = bountyList.get(i);
+            UUID target = entry.getKey();
             BountyData bounty = entry.getValue();
 
             String placerName = bounty.isAnonymous() ? "Anonymous" :
                     Bukkit.getOfflinePlayer(bounty.getPlacerId()).getName();
 
             commandSender.sendMessage(ColorUtils.color("<yellow><target> <gray>- <gold><amount> <gray>by <placer>",
-                    Placeholder.parsed("target", target.getName()),
+                    Placeholder.parsed("target", Bukkit.getOfflinePlayer(target).getName()),
                     Placeholder.parsed("amount", String.valueOf(bounty.getAmount())),
                     Placeholder.parsed("placer", placerName)));
         }

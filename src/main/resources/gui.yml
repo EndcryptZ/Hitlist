@@ -1,0 +1,43 @@
+gui:
+
+  # === Main Bounty GUI ===
+  main-bounty:
+    title: "&eBounty Main Menu"
+    rows: 5
+    fill: GRAY_STAINED_GLASS_PANE
+    fill-type: BORDER # BORDER - ALL - NONE
+
+    # === Bounty List Button ===
+    bounty-list-button:
+      material: WRITABLE_BOOK
+      slot: 23
+      name: "&eView Active Bounties"
+      lore:
+        - "&7Click to view all currently"
+        - "&7active bounties placed by players."
+
+    # === Place Bounty Button ===
+    place-bounty-button:
+      material: IRON_SWORD
+      slot: 21
+      name: "&ePlace a Bounty"
+      lore:
+        - "&7Click to open a menu"
+        - "&7for placing new bounties."
+
+  # === Place Bounty GUI ===
+  place-bounty:
+    title: "&ePlace Bounty Menu"
+    rows: 5
+
+    player-button:
+      name: "&e%player%"
+      lore:
+        - "&7Click to place bounty on &e%player%"
+        - "&7Current Bounty: &e$%bounty%"
+
+    sort-button:
+      material: SPYGLASS
+      name: "&eCurrent Sorting Type: &a%sort_type%"
+      lore:
+        - "&7Click to change the sorting type"

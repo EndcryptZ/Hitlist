@@ -16,7 +16,7 @@ public class BountyTargetArgument extends CustomArgument<OfflinePlayer, String> 
         super(new StringArgument("target"), info -> {
             String targetName = info.currentInput();
             OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-            if(!plugin.getBountyManager().getActiveBounties().containsKey(target)) {
+            if(!plugin.getBountyManager().getActiveBounties().containsKey(target.getUniqueId())) {
                 throw CustomArgumentException.fromString("Bounty target not found: " + targetName);
             }
             return target;
@@ -24,7 +24,7 @@ public class BountyTargetArgument extends CustomArgument<OfflinePlayer, String> 
 
         this.replaceSuggestions(ArgumentSuggestions.stringCollectionAsync(info ->
             CompletableFuture.supplyAsync(() ->
-                    plugin.getBountyManager().getActiveBounties().keySet().stream().map(OfflinePlayer::getName).toList()
+                    plugin.getBountyManager().getActiveBounties().keySet().stream().map(id -> Bukkit.getOfflinePlayer(id).getName()).toList()
             )
         ));
     }

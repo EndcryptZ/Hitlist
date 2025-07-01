@@ -15,8 +15,7 @@ bounty:
 
 # === Player Opting-In/Out Settings ===
 
-auto-opt-out-on-first-join: true
-
+auto-opt-out-on-first-join: true # Automatically opts players out of being a bounty target on their first join
 opt-in:
   cooldown:
     time: 30d

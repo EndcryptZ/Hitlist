@@ -86,12 +86,12 @@ public class MessagesConfig {
                 "%new_amount%", newAmount);
     }
 
-    public String getErrorMaxAmount() {
-        return format(getString(ConfigEnum.ERROR_MESSAGE_MAX_AMOUNT));
+    public String getErrorMaxAmount(String maxAmount) {
+        return format(getString(ConfigEnum.ERROR_MESSAGE_MAX_AMOUNT), "%max_amount%", maxAmount);
     }
 
-    public String getErrorMinAmount() {
-        return format(getString(ConfigEnum.ERROR_MESSAGE_MIN_AMOUNT));
+    public String getErrorMinAmount(String minAmount) {
+        return format(getString(ConfigEnum.ERROR_MESSAGE_MIN_AMOUNT), "%min_amount%", minAmount);
     }
 
     public String getErrorSelfBounty() {
