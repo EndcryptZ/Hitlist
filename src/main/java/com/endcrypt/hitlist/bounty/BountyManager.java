@@ -6,6 +6,7 @@ import com.endcrypt.hitlist.utils.EconomyUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -60,16 +61,19 @@ public class BountyManager {
         // Check if the bounty amount is within allowed bounds
         if (amount > plugin.getConfigManager().getMain().getMaxBountyAmount()) {
             plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorMaxAmount(String.valueOf(plugin.getConfigManager().getMain().getMaxBountyAmount())));
+            placer.playSound(placer.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);
             return;
         }
 
         if (amount < plugin.getConfigManager().getMain().getMinBountyAmount()) {
             plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorMinAmount(String.valueOf(plugin.getConfigManager().getMain().getMinBountyAmount())));
+            placer.playSound(placer.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);
             return;
         }
 
         // Verify the player has enough money to cover the bounty + fee
         if (!EconomyUtils.hasEnoughMoney(placer, amount + placementFee)) {
+            placer.playSound(placer.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);
             plugin.sendMessage(placer, plugin.getConfigManager().getMessages().getErrorNotEnoughMoney(amount + placementFee));
             return;
         }
@@ -173,7 +177,7 @@ public class BountyManager {
 
     /**
      * Lowers the bounty amount on a target player.
-     * Validates if the lowering player is allowed and ensures proper amount constraints.
+     * Validates if the lowering player is allowed and ensures the proper number of constraints.
      * Refunds the lowered amount to the player.
      *
      * @param target The player whose bounty is being lowered.

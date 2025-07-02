@@ -1,5 +1,6 @@
 package com.endcrypt.hitlist.config.gui.place.buttons;
 
+import com.endcrypt.hitlist.bounty.BountyData;
 import com.endcrypt.hitlist.config.ConfigEnum;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -16,12 +17,13 @@ public class PlayerButtonConfig {
         return name.replace("%player%", playerName);
     }
 
-    public String[] getLore(String playerName, double currentBounty) {
+    public String[] getLore(String playerName, BountyData bountyData) {
         String[] processed = new String[lore.length];
         for (int i = 0; i < lore.length; i++) {
+            String placeholder = bountyData != null ? String.valueOf(bountyData.getAmount()) : "0";
             processed[i] = lore[i]
                     .replace("%player%", playerName)
-                    .replace("%bounty%", String.valueOf(currentBounty));
+                    .replace("%bounty%", placeholder);
         }
         return processed;
     }

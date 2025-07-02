@@ -1,8 +1,10 @@
 package com.endcrypt.hitlist.gui;
 
 import com.endcrypt.hitlist.HitlistPlugin;
+import com.endcrypt.hitlist.gui.bounty.BountyAmountAnvilGUI;
 import com.endcrypt.hitlist.gui.bounty.MainBountyGUI;
 import com.endcrypt.hitlist.gui.bounty.PlaceBountyGUI;
+import com.endcrypt.hitlist.gui.bounty.SearchAnvilGUI;
 import com.endcrypt.hitlist.utils.SlotUtils;
 import com.samjakob.spigui.buttons.SGButton;
 import com.samjakob.spigui.menu.SGMenu;
@@ -15,9 +17,13 @@ public class GUIManager {
 
     private final MainBountyGUI mainBountyGUI;
     private final PlaceBountyGUI placeBountyGUI;
+    private final SearchAnvilGUI searchAnvilGUI;
+    private final BountyAmountAnvilGUI bountyAmountAnvilGUI;
     public GUIManager() {
         mainBountyGUI = new MainBountyGUI();
         placeBountyGUI = new PlaceBountyGUI();
+        searchAnvilGUI = new SearchAnvilGUI();
+        bountyAmountAnvilGUI = new BountyAmountAnvilGUI();
     }
 
     public void handleFill(FillType fillType, SGMenu gui, SGButton fillerButton, int rows) {

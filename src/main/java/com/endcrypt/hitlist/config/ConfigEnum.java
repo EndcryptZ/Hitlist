@@ -69,22 +69,31 @@ public enum ConfigEnum {
     GUI_MAIN_BOUNTY_ROWS("gui.main-bounty.rows"),
     GUI_MAIN_BOUNTY_FILL("gui.main-bounty.fill"),
     GUI_MAIN_BOUNTY_FILL_TYPE("gui.main-bounty.fill-type"),
+
     GUI_MAIN_BOUNTY_BOUNTY_LIST_BUTTON_MATERIAL("gui.main-bounty.bounty-list-button.material"),
     GUI_MAIN_BOUNTY_BOUNTY_LIST_BUTTON_SLOT("gui.main-bounty.bounty-list-button.slot"),
     GUI_MAIN_BOUNTY_BOUNTY_LIST_BUTTON_NAME("gui.main-bounty.bounty-list-button.name"),
     GUI_MAIN_BOUNTY_BOUNTY_LIST_BUTTON_LORE("gui.main-bounty.bounty-list-button.lore"),
+
     GUI_MAIN_BOUNTY_PLACE_BOUNTY_BUTTON_MATERIAL("gui.main-bounty.place-bounty-button.material"),
     GUI_MAIN_BOUNTY_PLACE_BOUNTY_BUTTON_SLOT("gui.main-bounty.place-bounty-button.slot"),
     GUI_MAIN_BOUNTY_PLACE_BOUNTY_BUTTON_NAME("gui.main-bounty.place-bounty-button.name"),
     GUI_MAIN_BOUNTY_PLACE_BOUNTY_BUTTON_LORE("gui.main-bounty.place-bounty-button.lore"),
 
+    // Place Bounty GUI Settings
     GUI_PLACE_BOUNTY_TITLE("gui.place-bounty.title"),
     GUI_PLACE_BOUNTY_ROWS("gui.place-bounty.rows"),
+
     GUI_PLACE_BOUNTY_PLAYER_BUTTON_NAME("gui.place-bounty.player-button.name"),
     GUI_PLACE_BOUNTY_PLAYER_BUTTON_LORE("gui.place-bounty.player-button.lore"),
+
     GUI_PLACE_BOUNTY_SORT_BUTTON_MATERIAL("gui.place-bounty.sort-button.material"),
     GUI_PLACE_BOUNTY_SORT_BUTTON_NAME("gui.place-bounty.sort-button.name"),
-    GUI_PLACE_BOUNTY_SORT_BUTTON_LORE("gui.place-bounty.sort-button.lore");
+    GUI_PLACE_BOUNTY_SORT_BUTTON_LORE("gui.place-bounty.sort-button.lore"),
+
+    GUI_PLACE_BOUNTY_SEARCH_BUTTON_MATERIAL("gui.place-bounty.search-button.material"),
+    GUI_PLACE_BOUNTY_SEARCH_BUTTON_NAME("gui.place-bounty.search-button.name"),
+    GUI_PLACE_BOUNTY_SEARCH_BUTTON_LORE("gui.place-bounty.search-button.lore");
 
 
     private final String path;

@@ -16,66 +16,71 @@ import org.bukkit.inventory.Inventory;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class PlaceBountyGUI {
 
     private final HitlistPlugin plugin = HitlistPlugin.instance;
 
-    public void open(Player player, SortType sortType) {
-        player.openInventory(getInventory(player, sortType));
+    public void open(Player player, SortType sortType, String searchQuery) {
+        player.openInventory(getInventory(player, sortType, searchQuery));
     }
 
-    private Inventory getInventory(Player viewer, SortType sortType) {
+    private Inventory getInventory(Player viewer, SortType sortType, String searchQuery) {
         PlaceBountyConfig placeBounty = plugin.getConfigManager().getGui().getPlaceBounty();
         String name = placeBounty.getTitle();
         int rows = placeBounty.getRows();
-        if(rows < 2) rows = 2;
-        if(rows > 6) rows = 6;
+        if (rows < 2) rows = 2;
+        if (rows > 6) rows = 6;
 
         SGMenu gui = plugin.getSpiGUI().create(name, rows, name);
 
         List<Player> validPlayers = new ArrayList<>();
-        List<Player> sortedPlayers = new ArrayList<>();
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if(player == viewer) continue;
-            if(plugin.getBountyManager().getActiveBounties().containsKey(player.getUniqueId()) && !plugin.getConfigManager().getMain().isStackingEnabled()) continue;
+            if (player == viewer) continue;
+            if (plugin.getBountyManager().getActiveBounties().containsKey(player.getUniqueId())
+                    && !plugin.getConfigManager().getMain().isStackingEnabled()) continue;
+
             validPlayers.add(player);
         }
 
-        switch (sortType) {
-            case ALPHABETICAL -> sortedPlayers = validPlayers.stream()
-                    .sorted(Comparator.comparing(p -> {
-                        p.getName();
-                        return p.getName();
-                    }))
+        // Apply search filter if not null or empty
+        if (searchQuery != null && !searchQuery.isBlank()) {
+            String queryLower = searchQuery.toLowerCase();
+            validPlayers = validPlayers.stream()
+                    .filter(p -> p.getName().toLowerCase().contains(queryLower))
+                    .toList();
+        }
+
+        List<Player> sortedPlayers = switch (sortType) {
+            case ALPHABETICAL -> validPlayers.stream()
+                    .sorted(Comparator.comparing(Player::getName))
                     .toList();
 
-            case HIGHEST_VALUE -> sortedPlayers = validPlayers.stream()
-                    .filter(Objects::nonNull)
-                    .sorted(Comparator.comparingDouble(player -> {
-                        if(plugin.getBountyManager().getActiveBounties().containsKey(player.getUniqueId())) {
-                            return plugin.getBountyManager().getActiveBounties().get(player.getUniqueId()).getAmount();
+            case HIGHEST_VALUE -> validPlayers.stream()
+                    .sorted(Comparator.comparingDouble((Player p) -> {
+                        if (plugin.getBountyManager().getActiveBounties().containsKey(p.getUniqueId())) {
+                            return plugin.getBountyManager().getActiveBounties().get(p.getUniqueId()).getAmount();
                         }
                         return 0.0;
-                    })).toList();
-        }
+                    }).reversed()) // Highest first
+                    .toList();
+        };
 
         int tempoSlot = 0;
         int slot = 0;
-        handlePaging(gui, rows, slot, sortType);
+        handlePaging(gui, rows, slot, sortType, searchQuery);
         for (Player player : sortedPlayers) {
             if (tempoSlot == 0) {
-                handlePaging(gui, rows, slot, sortType);
+                handlePaging(gui, rows, slot, sortType, searchQuery);
             }
-            if(tempoSlot == (rows * 9) - 9) {
+            if (tempoSlot == (rows * 9) - 9) {
                 slot += 9;
                 tempoSlot = 0;
-                gui.setButton(slot, playerButton(player));
+                gui.setButton(slot, playerButton(player, sortType, searchQuery));
                 continue;
             }
 
-            gui.setButton(slot, playerButton(player));
+            gui.setButton(slot, playerButton(player, sortType, searchQuery));
             tempoSlot++;
             slot++;
         }
@@ -83,15 +88,19 @@ public class PlaceBountyGUI {
         return gui.getInventory();
     }
 
-    private SGButton playerButton(Player player) {
+
+    private SGButton playerButton(Player player, SortType sortType, String searchQuery) {
         PlaceBountyConfig placeBounty = plugin.getConfigManager().getGui().getPlaceBounty();
 
         return new SGButton(
                 new ItemBuilder(HeadUtils.getPlayerHead(player.getName()))
                         .name(placeBounty.getPlayerButtonConfig().getName(player.getName()))
-                        .lore(placeBounty.getPlayerButtonConfig().getLore(player.getName(), plugin.getBountyManager().getActiveBounties().get(player.getUniqueId()).getAmount()))
+                        .lore(placeBounty.getPlayerButtonConfig().getLore(player.getName(), plugin.getBountyManager().getActiveBounties().get(player.getUniqueId())))
                         .build()
-        );
+        ).withListener((InventoryClickEvent event) -> {
+            Player playerClicked = (Player) event.getWhoClicked();
+            plugin.getGuiManager().getBountyAmountAnvilGUI().open(playerClicked, player, sortType, searchQuery);
+        });
     }
     private SGButton sortButton(SortType sortType) {
         PlaceBountyConfig placeBounty = plugin.getConfigManager().getGui().getPlaceBounty();
@@ -103,9 +112,26 @@ public class PlaceBountyGUI {
         ).withListener((InventoryClickEvent event) -> {
             Player player = (Player) event.getWhoClicked();
             if(sortType == SortType.ALPHABETICAL) {
-                open(player, SortType.HIGHEST_VALUE);
+                open(player, SortType.HIGHEST_VALUE, null);
             } else {
-                open(player, SortType.ALPHABETICAL);
+                open(player, SortType.ALPHABETICAL, null);
+            }
+        });
+    }
+
+    private SGButton searchButton(String searchTerm) {
+        PlaceBountyConfig placeBounty = plugin.getConfigManager().getGui().getPlaceBounty();
+        return new SGButton(
+                new ItemBuilder(placeBounty.getSearchButtonConfig().getMaterial())
+                        .name(placeBounty.getSearchButtonConfig().getName(searchTerm))
+                        .lore(placeBounty.getSearchButtonConfig().getLore())
+                        .build()
+        ).withListener((InventoryClickEvent event) -> {
+            Player player = (Player) event.getWhoClicked();
+            if(event.isLeftClick()) {
+                plugin.getGuiManager().getSearchAnvilGUI().open(player);
+            } else if (event.isRightClick()) {
+                open(player, SortType.ALPHABETICAL, null);
             }
         });
     }
@@ -140,7 +166,7 @@ public class PlaceBountyGUI {
                 });
     }
 
-    private void handlePaging(SGMenu gui, int rows, int slot, SortType sortType) {
+    private void handlePaging(SGMenu gui, int rows, int slot, SortType sortType, String searchQuery) {
         int base = slot + ((rows * 9));
         if (gui.getMaxPage() > 1) {
             if (gui.getCurrentPage() > 1) {
@@ -151,6 +177,7 @@ public class PlaceBountyGUI {
             }
         }
         gui.setButton(base - 5, sortButton(sortType));
+        gui.setButton(base - 8, searchButton(searchQuery));
     }
 
 }

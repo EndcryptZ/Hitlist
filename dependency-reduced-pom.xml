@@ -51,7 +51,20 @@
               <pattern>dev.jorel.commandapi</pattern>
               <shadedPattern>endcrypt.hitlist.shaded.commandapi</shadedPattern>
             </relocation>
+            <relocation>
+              <pattern>net.wesjd.anvilgui</pattern>
+              <shadedPattern>endcrypt.hitlist.shaded.anvilgui</shadedPattern>
+            </relocation>
           </relocations>
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludeDefaults>false</excludeDefaults>
+              <includes>
+                <include>net/wesjd/anvilgui/**</include>
+              </includes>
+            </filter>
+          </filters>
         </configuration>
       </plugin>
     </plugins>
@@ -84,6 +97,10 @@
     <repository>
       <id>opencollab-snapshot</id>
       <url>https://repo.opencollab.dev/main/</url>
+    </repository>
+    <repository>
+      <id>codemc-snapshots</id>
+      <url>https://repo.codemc.io/repository/maven-snapshots/</url>
     </repository>
   </repositories>
   <dependencies>

@@ -63,7 +63,7 @@ public class MainBountyGUI {
                         .build()
         ).withListener((InventoryClickEvent event) -> {
             Player player = (Player) event.getWhoClicked();
-            plugin.getGuiManager().getPlaceBountyGUI().open(player, SortType.ALPHABETICAL);
+            plugin.getGuiManager().getPlaceBountyGUI().open(player, SortType.ALPHABETICAL, null);
         });
     }
 
