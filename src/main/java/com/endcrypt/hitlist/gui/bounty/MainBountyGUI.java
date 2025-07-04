@@ -30,13 +30,13 @@ public class MainBountyGUI {
 
         plugin.getGuiManager().handleFill(fillType, gui, fillerButton(), rows);
 
-        gui.setButton(mainBounty.getActiveBountiesButtonConfig().getSlot(), bountyListButton());
+        gui.setButton(mainBounty.getActiveBountiesButtonConfig().getSlot(), activeBountiesButton());
         gui.setButton(mainBounty.getPlaceBountyButtonConfig().getSlot(), placeBountyButton());
 
         return gui.getInventory();
     }
 
-    private SGButton bountyListButton() {
+    private SGButton activeBountiesButton() {
         MainBountyConfig mainBounty = plugin.getConfigManager().getGui().getMainBounty();
         Material material = mainBounty.getActiveBountiesButtonConfig().getMaterial();
         String name = mainBounty.getActiveBountiesButtonConfig().getName();
@@ -47,7 +47,10 @@ public class MainBountyGUI {
                         .name(name)
                         .lore(lore)
                         .build()
-        );
+        ).withListener((InventoryClickEvent event) -> {
+            Player player = (Player) event.getWhoClicked();
+            plugin.getGuiManager().getActiveBountiesGUI().open(player, SortType.ALPHABETICAL, null);
+        });
     }
 
     private SGButton placeBountyButton() {

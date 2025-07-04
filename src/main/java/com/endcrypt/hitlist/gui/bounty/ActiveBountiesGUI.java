@@ -98,8 +98,8 @@ public class ActiveBountiesGUI {
 
         return new SGButton(
                 new ItemBuilder(HeadUtils.getPlayerHead(player.getName()))
-                        .name(activeBounties.getPlayerButtonConfig().getName(player.getName()))
-                        .lore(activeBounties.getPlayerButtonConfig().getLore(player.getName(), plugin.getBountyManager().getActiveBounties().get(player.getUniqueId())))
+                        .name(activeBounties.getBountyButtonConfig().getName(player.getName()))
+                        .lore(activeBounties.getBountyButtonConfig().getLore(player.getName(), plugin.getBountyManager().getActiveBounties().get(player.getUniqueId())))
                         .build()
         ).withListener((InventoryClickEvent event) -> {
             Player playerClicked = (Player) event.getWhoClicked();

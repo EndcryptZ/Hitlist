@@ -7,7 +7,7 @@ C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\commands\
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\ConfigEnum.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\ConfigManager.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\active\ActiveBountiesConfig.java
-C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\active\buttons\PlayerButtonConfig.java
+C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\active\buttons\BountyButtonConfig.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\active\buttons\SearchButtonConfig.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\active\buttons\SortButtonConfig.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\GUIConfig.java

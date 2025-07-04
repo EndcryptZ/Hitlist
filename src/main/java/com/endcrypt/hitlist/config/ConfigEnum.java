@@ -106,8 +106,8 @@ public enum ConfigEnum {
     GUI_ACTIVE_BOUNTIES_TITLE("gui.active-bounties.title"),
     GUI_ACTIVE_BOUNTIES_ROWS("gui.active-bounties.rows"),
 
-    GUI_ACTIVE_BOUNTIES_PLAYER_BUTTON_NAME("gui.active-bounties.player-button.name"),
-    GUI_ACTIVE_BOUNTIES_PLAYER_BUTTON_LORE("gui.active-bounties.player-button.lore"),
+    GUI_ACTIVE_BOUNTIES_BOUNTY_BUTTON_NAME("gui.active-bounties.bounty-button.name"),
+    GUI_ACTIVE_BOUNTIES_BOUNTY_BUTTON_LORE("gui.active-bounties.bounty-button.lore"),
 
     GUI_ACTIVE_BOUNTIES_SORT_BUTTON_ENABLED("gui.active-bounties.sort-button.enabled"),
     GUI_ACTIVE_BOUNTIES_SORT_BUTTON_MATERIAL("gui.active-bounties.sort-button.material"),

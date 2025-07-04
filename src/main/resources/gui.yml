@@ -58,11 +58,14 @@ gui:
     title: "&eActive Bounties Menu"
     rows: 5
 
-    player-button:
-      name: "&e%player%"
+    bounty-button:
+      name: "&e%target%"
       lore:
-        - "&7Click to place bounty on &e%player%"
-        - "&7Current Bounty: &e$%bounty%" # Displays 0 if the player has no active bounty. You may remove this line if bounty stacking is disabled
+        - "&f&lBounty:"
+        - "&7Placer: &f%placer%"
+        - "&7Target: &f%target%"
+        - "&7Amount: &f%amount%"
+        - "&7Expires: &f%expiry%"
 
     sort-button:
       enabled: true # false: prevents this button from showing up

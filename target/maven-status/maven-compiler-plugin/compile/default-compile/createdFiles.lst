@@ -17,7 +17,6 @@ com\endcrypt\hitlist\permissions\PermissionsEnum.class
 com\endcrypt\hitlist\config\gui\active\buttons\SearchButtonConfig.class
 com\endcrypt\hitlist\utils\TimeUtils.class
 com\endcrypt\hitlist\config\gui\active\ActiveBountiesConfig.class
-com\endcrypt\hitlist\config\gui\active\buttons\PlayerButtonConfig.class
 com\endcrypt\hitlist\player\PlayerData.class
 com\endcrypt\hitlist\utils\ColorUtils.class
 com\endcrypt\hitlist\config\ConfigManager.class
@@ -44,4 +43,5 @@ com\endcrypt\hitlist\commands\CommandManager.class
 com\endcrypt\hitlist\utils\EconomyUtils.class
 com\endcrypt\hitlist\gui\GUIType.class
 com\endcrypt\hitlist\commands\HitlistCommand.class
+com\endcrypt\hitlist\config\gui\active\buttons\BountyButtonConfig.class
 com\endcrypt\hitlist\config\gui\place\buttons\SearchButtonConfig.class
