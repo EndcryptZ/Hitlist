@@ -119,10 +119,26 @@ public class MessagesConfig {
     }
 
     public String getNoPermissionBountyEditOthers() {
-        return format(getString(ConfigEnum.NO_PERMISSION_BOUNTY_EDIT_OTHERS));
+        return format(getString(ConfigEnum.NO_PERMISSION_MESSAGE_BOUNTY_EDIT_OTHERS));
     }
 
     public String getSystemConfigReload() {
         return format(getString(ConfigEnum.SYSTEM_MESSAGE_CONFIG_RELOAD));
+    }
+
+    public String getGUIMaxAmount() {
+        return getString(ConfigEnum.GUI_MESSAGE_MAX_AMOUNT);
+    }
+
+    public String getGUIMinAmount() {
+        return getString(ConfigEnum.GUI_MESSAGE_MIN_AMOUNT);
+    }
+
+    public String getGUIInvalidNumber() {
+        return getString(ConfigEnum.GUI_INVALID_NUMBER);
+    }
+
+    public String getGUINotEnoughMoney() {
+        return getString(ConfigEnum.GUI_NOT_ENOUGH_MONEY);
     }
 }

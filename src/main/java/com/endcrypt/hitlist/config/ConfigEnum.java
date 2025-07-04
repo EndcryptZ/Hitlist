@@ -59,10 +59,16 @@ public enum ConfigEnum {
     ERROR_MESSAGE_MAX_BOUNTIES_LIMIT("messages.error-max-bounties-limit"),
 
     // Permission Messages
-    NO_PERMISSION_BOUNTY_EDIT_OTHERS("messages.no-permission-bounty-edit-others"),
+    NO_PERMISSION_MESSAGE_BOUNTY_EDIT_OTHERS("messages.no-permission-bounty-edit-others"),
 
     // System Messages
     SYSTEM_MESSAGE_CONFIG_RELOAD("messages.system-config-reload"),
+
+    // GUI Messages
+    GUI_MESSAGE_MAX_AMOUNT("messages.gui-max-amount"),
+    GUI_MESSAGE_MIN_AMOUNT("messages.gui-min-amount"),
+    GUI_INVALID_NUMBER("messages.gui-invalid-number"),
+    GUI_NOT_ENOUGH_MONEY("messages.gui-not-enough-money"),
 
     // GUI Settings
     GUI_MAIN_BOUNTY_TITLE("gui.main-bounty.title"),
@@ -70,10 +76,10 @@ public enum ConfigEnum {
     GUI_MAIN_BOUNTY_FILL("gui.main-bounty.fill"),
     GUI_MAIN_BOUNTY_FILL_TYPE("gui.main-bounty.fill-type"),
 
-    GUI_MAIN_BOUNTY_BOUNTY_LIST_BUTTON_MATERIAL("gui.main-bounty.bounty-list-button.material"),
-    GUI_MAIN_BOUNTY_BOUNTY_LIST_BUTTON_SLOT("gui.main-bounty.bounty-list-button.slot"),
-    GUI_MAIN_BOUNTY_BOUNTY_LIST_BUTTON_NAME("gui.main-bounty.bounty-list-button.name"),
-    GUI_MAIN_BOUNTY_BOUNTY_LIST_BUTTON_LORE("gui.main-bounty.bounty-list-button.lore"),
+    GUI_MAIN_BOUNTY_ACTIVE_BOUNTIES_BUTTON_MATERIAL("gui.main-bounty.active-bounties-button.material"),
+    GUI_MAIN_BOUNTY_ACTIVE_BOUNTIES_BUTTON_SLOT("gui.main-bounty.active-bounties-button.slot"),
+    GUI_MAIN_BOUNTY_ACTIVE_BOUNTIES_BUTTON_NAME("gui.main-bounty.active-bounties-button.name"),
+    GUI_MAIN_BOUNTY_ACTIVE_BOUNTIES_BUTTON_LORE("gui.main-bounty.active-bounties-button.lore"),
 
     GUI_MAIN_BOUNTY_PLACE_BOUNTY_BUTTON_MATERIAL("gui.main-bounty.place-bounty-button.material"),
     GUI_MAIN_BOUNTY_PLACE_BOUNTY_BUTTON_SLOT("gui.main-bounty.place-bounty-button.slot"),
@@ -87,13 +93,30 @@ public enum ConfigEnum {
     GUI_PLACE_BOUNTY_PLAYER_BUTTON_NAME("gui.place-bounty.player-button.name"),
     GUI_PLACE_BOUNTY_PLAYER_BUTTON_LORE("gui.place-bounty.player-button.lore"),
 
+    GUI_PLACE_BOUNTY_SORT_BUTTON_ENABLED("gui.place-bounty.sort-button.enabled"),
     GUI_PLACE_BOUNTY_SORT_BUTTON_MATERIAL("gui.place-bounty.sort-button.material"),
     GUI_PLACE_BOUNTY_SORT_BUTTON_NAME("gui.place-bounty.sort-button.name"),
     GUI_PLACE_BOUNTY_SORT_BUTTON_LORE("gui.place-bounty.sort-button.lore"),
 
     GUI_PLACE_BOUNTY_SEARCH_BUTTON_MATERIAL("gui.place-bounty.search-button.material"),
     GUI_PLACE_BOUNTY_SEARCH_BUTTON_NAME("gui.place-bounty.search-button.name"),
-    GUI_PLACE_BOUNTY_SEARCH_BUTTON_LORE("gui.place-bounty.search-button.lore");
+    GUI_PLACE_BOUNTY_SEARCH_BUTTON_LORE("gui.place-bounty.search-button.lore"),
+
+    // Active Bounties GUI Settings
+    GUI_ACTIVE_BOUNTIES_TITLE("gui.active-bounties.title"),
+    GUI_ACTIVE_BOUNTIES_ROWS("gui.active-bounties.rows"),
+
+    GUI_ACTIVE_BOUNTIES_PLAYER_BUTTON_NAME("gui.active-bounties.player-button.name"),
+    GUI_ACTIVE_BOUNTIES_PLAYER_BUTTON_LORE("gui.active-bounties.player-button.lore"),
+
+    GUI_ACTIVE_BOUNTIES_SORT_BUTTON_ENABLED("gui.active-bounties.sort-button.enabled"),
+    GUI_ACTIVE_BOUNTIES_SORT_BUTTON_MATERIAL("gui.active-bounties.sort-button.material"),
+    GUI_ACTIVE_BOUNTIES_SORT_BUTTON_NAME("gui.active-bounties.sort-button.name"),
+    GUI_ACTIVE_BOUNTIES_SORT_BUTTON_LORE("gui.active-bounties.sort-button.lore"),
+
+    GUI_ACTIVE_BOUNTIES_SEARCH_BUTTON_MATERIAL("gui.active-bounties.search-button.material"),
+    GUI_ACTIVE_BOUNTIES_SEARCH_BUTTON_NAME("gui.active-bounties.search-button.name"),
+    GUI_ACTIVE_BOUNTIES_SEARCH_BUTTON_LORE("gui.active-bounties.search-button.lore");
 
 
     private final String path;

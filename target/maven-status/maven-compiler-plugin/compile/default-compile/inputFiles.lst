@@ -6,9 +6,12 @@ C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\commands\
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\commands\HitlistCommand.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\ConfigEnum.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\ConfigManager.java
+C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\active\ActiveBountiesConfig.java
+C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\active\buttons\PlayerButtonConfig.java
+C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\active\buttons\SearchButtonConfig.java
+C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\active\buttons\SortButtonConfig.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\GUIConfig.java
-C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\list\BountyListConfig.java
-C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\main\buttons\BountyListButtonConfig.java
+C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\main\buttons\ActiveBountiesButtonConfig.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\main\buttons\PlaceBountyButtonConfig.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\main\MainBountyConfig.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\place\buttons\PlayerButtonConfig.java
@@ -17,13 +20,14 @@ C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gu
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\gui\place\PlaceBountyConfig.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\MainConfig.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\config\MessagesConfig.java
+C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\gui\bounty\ActiveBountiesGUI.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\gui\bounty\BountyAmountAnvilGUI.java
-C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\gui\bounty\BountyListGUI.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\gui\bounty\MainBountyGUI.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\gui\bounty\PlaceBountyGUI.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\gui\bounty\SearchAnvilGUI.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\gui\FillType.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\gui\GUIManager.java
+C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\gui\GUIType.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\gui\SortType.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\HitlistPlugin.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\permissions\PermissionManager.java
@@ -36,5 +40,6 @@ C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\utils\Col
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\utils\DateUtils.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\utils\EconomyUtils.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\utils\HeadUtils.java
+C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\utils\ItemUtils.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\utils\SlotUtils.java
 C:\Users\Admin\IdeaProjects\Hitlist\src\main\java\com\endcrypt\hitlist\utils\TimeUtils.java

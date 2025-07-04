@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum SortType {
 
     ALPHABETICAL("Alphabetical"),
-    HIGHEST_VALUE("Highest Value");
+    HIGHEST_VALUE("Highest Value"),
+    LOWEST_VALUE("Lowest Value");
 
     private final String name;
     SortType(String name) {

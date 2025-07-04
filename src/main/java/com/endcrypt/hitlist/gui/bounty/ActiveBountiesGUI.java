@@ -1,6 +1,7 @@
 package com.endcrypt.hitlist.gui.bounty;
 
 import com.endcrypt.hitlist.HitlistPlugin;
+import com.endcrypt.hitlist.config.gui.active.ActiveBountiesConfig;
 import com.endcrypt.hitlist.config.gui.place.PlaceBountyConfig;
 import com.endcrypt.hitlist.gui.GUIType;
 import com.endcrypt.hitlist.gui.SortType;
@@ -10,15 +11,15 @@ import com.samjakob.spigui.item.ItemBuilder;
 import com.samjakob.spigui.menu.SGMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class PlaceBountyGUI {
+public class ActiveBountiesGUI {
 
     private final HitlistPlugin plugin = HitlistPlugin.instance;
 
@@ -27,38 +28,30 @@ public class PlaceBountyGUI {
     }
 
     private Inventory getInventory(Player viewer, SortType sortType, String searchQuery) {
-        PlaceBountyConfig placeBounty = plugin.getConfigManager().getGui().getPlaceBounty();
-        String name = placeBounty.getTitle();
-        int rows = placeBounty.getRows();
+        ActiveBountiesConfig activeBounties = plugin.getConfigManager().getGui().getActiveBounties();
+        String title = activeBounties.getTitle();
+        int rows = activeBounties.getRows();
         if (rows < 2) rows = 2;
         if (rows > 6) rows = 6;
 
-        SGMenu gui = plugin.getSpiGUI().create(name, rows, name);
+        SGMenu gui = plugin.getSpiGUI().create(title, rows, title);
 
-        List<Player> validPlayers = new ArrayList<>();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player == viewer) continue;
-            if (plugin.getBountyManager().getActiveBounties().containsKey(player.getUniqueId())
-                    && !plugin.getConfigManager().getMain().isStackingEnabled()) continue;
-
-            validPlayers.add(player);
-        }
-
+        List<OfflinePlayer> validPlayerBounties = plugin.getBountyManager().getActiveBounties().keySet().stream().map(uuid -> Bukkit.getOfflinePlayer(uuid)).toList();
         // Apply search filter if not null or empty
         if (searchQuery != null && !searchQuery.isBlank()) {
             String queryLower = searchQuery.toLowerCase();
-            validPlayers = validPlayers.stream()
+            validPlayerBounties = validPlayerBounties.stream()
                     .filter(p -> p.getName().toLowerCase().contains(queryLower))
                     .toList();
         }
 
-        List<Player> sortedPlayers = switch (sortType) {
-            case ALPHABETICAL -> validPlayers.stream()
-                    .sorted(Comparator.comparing(Player::getName))
+        List<OfflinePlayer> sortedPlayers = switch (sortType) {
+            case ALPHABETICAL -> validPlayerBounties.stream()
+                    .sorted(Comparator.comparing(OfflinePlayer::getName))
                     .toList();
 
-            case HIGHEST_VALUE -> validPlayers.stream()
-                    .sorted(Comparator.comparingDouble((Player p) -> {
+            case HIGHEST_VALUE -> validPlayerBounties.stream()
+                    .sorted(Comparator.comparingDouble((OfflinePlayer p) -> {
                         if (plugin.getBountyManager().getActiveBounties().containsKey(p.getUniqueId())) {
                             return plugin.getBountyManager().getActiveBounties().get(p.getUniqueId()).getAmount();
                         }
@@ -66,8 +59,8 @@ public class PlaceBountyGUI {
                     }).reversed()) // Highest first
                     .toList();
 
-            case LOWEST_VALUE -> validPlayers.stream()
-                    .sorted(Comparator.comparingDouble((Player p) -> {
+            case LOWEST_VALUE -> validPlayerBounties.stream()
+                    .sorted(Comparator.comparingDouble((OfflinePlayer p) -> {
                         if (plugin.getBountyManager().getActiveBounties().containsKey(p.getUniqueId())) {
                             return plugin.getBountyManager().getActiveBounties().get(p.getUniqueId()).getAmount();
                         }
@@ -79,7 +72,7 @@ public class PlaceBountyGUI {
         int tempoSlot = 0;
         int slot = 0;
         handlePaging(gui, rows, slot, sortType, searchQuery);
-        for (Player player : sortedPlayers) {
+        for (OfflinePlayer player : sortedPlayers) {
             if (tempoSlot == 0) {
                 handlePaging(gui, rows, slot, sortType, searchQuery);
             }
@@ -95,21 +88,21 @@ public class PlaceBountyGUI {
             slot++;
         }
 
+
+
         return gui.getInventory();
     }
 
-
-    private SGButton playerButton(Player player, SortType sortType, String searchQuery) {
-        PlaceBountyConfig placeBounty = plugin.getConfigManager().getGui().getPlaceBounty();
+    private SGButton playerButton(OfflinePlayer player, SortType sortType, String searchQuery) {
+        ActiveBountiesConfig activeBounties = plugin.getConfigManager().getGui().getActiveBounties();
 
         return new SGButton(
                 new ItemBuilder(HeadUtils.getPlayerHead(player.getName()))
-                        .name(placeBounty.getPlayerButtonConfig().getName(player.getName()))
-                        .lore(placeBounty.getPlayerButtonConfig().getLore(player.getName(), plugin.getBountyManager().getActiveBounties().get(player.getUniqueId())))
+                        .name(activeBounties.getPlayerButtonConfig().getName(player.getName()))
+                        .lore(activeBounties.getPlayerButtonConfig().getLore(player.getName(), plugin.getBountyManager().getActiveBounties().get(player.getUniqueId())))
                         .build()
         ).withListener((InventoryClickEvent event) -> {
             Player playerClicked = (Player) event.getWhoClicked();
-            plugin.getGuiManager().getBountyAmountAnvilGUI().open(playerClicked, player, sortType, searchQuery, String.valueOf(plugin.getConfigManager().getMain().getMinBountyAmount()));
         });
     }
 
@@ -144,7 +137,7 @@ public class PlaceBountyGUI {
         ).withListener((InventoryClickEvent event) -> {
             Player player = (Player) event.getWhoClicked();
             if(event.isLeftClick()) {
-                plugin.getGuiManager().getSearchAnvilGUI().open(player, GUIType.PLACE_BOUNTY);
+                plugin.getGuiManager().getSearchAnvilGUI().open(player, GUIType.ACTIVE_BOUNTIES);
             } else if (event.isRightClick()) {
                 open(player, SortType.ALPHABETICAL, null);
             }
@@ -195,5 +188,4 @@ public class PlaceBountyGUI {
         if(placeBounty.getSortButtonConfig().isEnabled()) gui.setButton(base - 8, sortButton(sortType));
         gui.setButton(base - 5, searchButton(searchQuery));
     }
-
 }

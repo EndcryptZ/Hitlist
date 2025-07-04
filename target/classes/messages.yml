@@ -25,3 +25,9 @@ messages:
   
 # === System Messages ===
   system-config-reload: "&aConfiguration reloaded successfully!"
+
+# === GUI Messages ===
+  gui-max-amount: "Exceeds Max Amount!"
+  gui-min-amount: "Exceeds Min Amount!"
+  gui-invalid-number: "Invalid Amount!"
+  gui-not-enough-money: "Insufficient Funds!"

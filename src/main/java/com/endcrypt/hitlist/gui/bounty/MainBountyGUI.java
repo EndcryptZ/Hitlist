@@ -30,7 +30,7 @@ public class MainBountyGUI {
 
         plugin.getGuiManager().handleFill(fillType, gui, fillerButton(), rows);
 
-        gui.setButton(mainBounty.getBountyListButtonConfig().getSlot(), bountyListButton());
+        gui.setButton(mainBounty.getActiveBountiesButtonConfig().getSlot(), bountyListButton());
         gui.setButton(mainBounty.getPlaceBountyButtonConfig().getSlot(), placeBountyButton());
 
         return gui.getInventory();
@@ -38,9 +38,9 @@ public class MainBountyGUI {
 
     private SGButton bountyListButton() {
         MainBountyConfig mainBounty = plugin.getConfigManager().getGui().getMainBounty();
-        Material material = mainBounty.getBountyListButtonConfig().getMaterial();
-        String name = mainBounty.getBountyListButtonConfig().getName();
-        String[] lore = mainBounty.getBountyListButtonConfig().getLore();
+        Material material = mainBounty.getActiveBountiesButtonConfig().getMaterial();
+        String name = mainBounty.getActiveBountiesButtonConfig().getName();
+        String[] lore = mainBounty.getActiveBountiesButtonConfig().getLore();
 
         return new SGButton(
                 new ItemBuilder(material)

@@ -7,8 +7,8 @@ gui:
     fill: GRAY_STAINED_GLASS_PANE
     fill-type: BORDER # BORDER - ALL - NONE
 
-    # === Bounty List Button ===
-    bounty-list-button:
+    # === Active Bounties Button ===
+    active-bounties-button:
       material: WRITABLE_BOOK
       slot: 23
       name: "&eView Active Bounties"
@@ -35,9 +35,37 @@ gui:
       name: "&e%player%"
       lore:
         - "&7Click to place bounty on &e%player%"
-        - "&7Current Bounty: &e$%bounty%" # %bounty% shows 0 if a player has no active bounty
+        - "&7Current Bounty: &e$%bounty%" # Displays 0 if the player has no active bounty. You may remove this line if bounty stacking is disabled
 
     sort-button:
+      enabled: true # false: prevents this button from showing up
+      material: SPYGLASS
+      name: "&eSorting: &a%sort_type%"
+      lore:
+        - "&7Click to cycle through sorting options"
+        - "&8Note: This will clear your current search"
+
+    search-button:
+      material: COMPASS
+      name: "&eSearch: &a%search_query%"
+      lore:
+        - "&aLeft-click &7to enter a player name"
+        - "&aRight-click &7to clear the search query"
+        - "&8Updates the displayed results"
+
+  # === Active Bounties GUI ===
+  active-bounties:
+    title: "&eActive Bounties Menu"
+    rows: 5
+
+    player-button:
+      name: "&e%player%"
+      lore:
+        - "&7Click to place bounty on &e%player%"
+        - "&7Current Bounty: &e$%bounty%" # Displays 0 if the player has no active bounty. You may remove this line if bounty stacking is disabled
+
+    sort-button:
+      enabled: true # false: prevents this button from showing up
       material: SPYGLASS
       name: "&eSorting: &a%sort_type%"
       lore:
