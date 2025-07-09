@@ -14,6 +14,7 @@ public enum ConfigEnum {
     BOUNTY_EXPIRATION_ENABLED("bounty.expiration.enabled"),
     BOUNTY_EXPIRATION_TIME("bounty.expiration.time"),
     BOUNTY_ANONYMOUS_ENABLED("bounty.anonymous.enabled"),
+    BOUNTY_CLAIM_OWN_BOUNTY("bounty.claim-own-bounty"),
 
     // Player Opt-In/Out Settings
     AUTO_OPT_OUT_ON_FIRST_JOIN("auto-opt-out-on-first-join"),
@@ -48,6 +49,7 @@ public enum ConfigEnum {
     MESSAGE_BOUNTY_EXPIRED("messages.bounty-expired"),
     MESSAGE_BOUNTY_REMOVE("messages.bounty-remove"),
     MESSAGE_BOUNTY_LOWER("messages.bounty-lower"),
+    MESSAGE_BOUNTY_CLAIM("messages.bounty-claim"),
 
     // Error Messages
     ERROR_MESSAGE_MAX_AMOUNT("messages.error-max-amount"),

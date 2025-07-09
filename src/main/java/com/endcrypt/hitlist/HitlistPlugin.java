@@ -4,7 +4,10 @@ import com.endcrypt.hitlist.bounty.BountyManager;
 import com.endcrypt.hitlist.commands.CommandManager;
 import com.endcrypt.hitlist.config.ConfigManager;
 import com.endcrypt.hitlist.gui.GUIManager;
+import com.endcrypt.hitlist.leaderboard.LeaderboardManager;
 import com.endcrypt.hitlist.permissions.PermissionManager;
+import com.endcrypt.hitlist.player.PlayerListener;
+import com.endcrypt.hitlist.player.PlayerManager;
 import com.endcrypt.hitlist.storage.StorageManager;
 import com.samjakob.spigui.SpiGUI;
 import dev.jorel.commandapi.CommandAPI;
@@ -29,10 +32,12 @@ public final class HitlistPlugin extends JavaPlugin {
     // Instances
     BountyManager bountyManager;
     ConfigManager configManager;
+    PlayerManager playerManager;
     CommandManager commandManager;
     StorageManager storageManager;
     PermissionManager permissionManager;
     GUIManager guiManager;
+    LeaderboardManager leaderboardManager;
 
     @Override
     public void onLoad() {
@@ -47,12 +52,15 @@ public final class HitlistPlugin extends JavaPlugin {
         CommandAPI.onEnable();
         this.initializeInstances();
         this.initializeEconomy();
+        this.playerManager.loadAllPlayers();
+        this.registerListeners();
 
     }
 
     @Override
     public void onDisable() {
         CommandAPI.onDisable();
+        this.playerManager.saveAllPlayers();
         // Plugin shutdown logic
     }
 
@@ -62,13 +70,19 @@ public final class HitlistPlugin extends JavaPlugin {
         spiGUI = new SpiGUI(this);
         storageManager = new StorageManager();
         bountyManager = new BountyManager();
+        playerManager = new PlayerManager();
         configManager = new ConfigManager();
         commandManager = new CommandManager();
         permissionManager = new PermissionManager();
         guiManager = new GUIManager();
+        leaderboardManager = new LeaderboardManager();
 
 
 
+    }
+
+    private void registerListeners() {
+        new PlayerListener();
     }
 
     private boolean setupEconomy() {

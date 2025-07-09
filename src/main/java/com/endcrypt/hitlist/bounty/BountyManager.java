@@ -2,6 +2,7 @@ package com.endcrypt.hitlist.bounty;
 
 import com.endcrypt.hitlist.HitlistPlugin;
 import com.endcrypt.hitlist.permissions.PermissionsEnum;
+import com.endcrypt.hitlist.player.PlayerData;
 import com.endcrypt.hitlist.utils.EconomyUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -17,9 +18,10 @@ public class BountyManager {
     private static final HitlistPlugin plugin = HitlistPlugin.instance;
     private final Map<UUID, BountyData> activeBounties;
 
-    public BountyManager() {
-        activeBounties = plugin.getStorageManager().getBountyStorage().loadAllBounties();
-    }
+        public BountyManager() {
+            activeBounties = plugin.getStorageManager().getBountyStorage().loadAllBounties();
+            new BountyTask();
+        }
 
 
     /**
@@ -169,9 +171,9 @@ public class BountyManager {
         // Notify the canceller
         plugin.commandSenderMessage(canceller, plugin.getConfigManager().getMessages().getBountyRemove(target.getName()));
 
-        // Refund the bounty to the target player if refunding is enabled
+        // Refund the bounty to the placer if refunding is enabled
         if (plugin.getConfigManager().getMain().isRefundOnRemovalEnabled()) {
-            EconomyUtils.deposit(target, bountyData.getAmount());
+            EconomyUtils.deposit(placer, bountyData.getPlacersMap().get(placer.getUniqueId()));
         }
     }
 
@@ -227,6 +229,40 @@ public class BountyManager {
                 amount,
                 newAmount
         ));
+    }
+
+    public void claimBounty(Player player, Player target) {
+        if (!activeBounties.containsKey(target.getUniqueId())) {
+            return;
+        }
+
+        BountyData bountyData = activeBounties.get(target.getUniqueId());
+
+        if(bountyData.getPlacerId().equals(player.getUniqueId()) && plugin.getConfigManager().getMain().isClaimOwnBountyEnabled()) {
+            return;
+        }
+
+        PlayerData playerData = plugin.getPlayerManager().getPlayerData(player);
+        double amount = bountyData.getAmount();
+
+        activeBounties.remove(target.getUniqueId());
+        plugin.getStorageManager().getBountyStorage().removeBounty(target.getUniqueId());
+        EconomyUtils.deposit(player, amount);
+        playerData.setTotalClaimedBounty(amount + playerData.getTotalClaimedBounty());
+        plugin.getPlayerManager().getPlayerDataMap().put(player.getUniqueId(), playerData);
+        plugin.sendMessage(player, plugin.getConfigManager().getMessages().getBountyClaim(target.getName(), amount));
+
+    }
+
+    public void expireBounty(UUID uuid) {
+        BountyData bountyData = activeBounties.get(uuid);
+        OfflinePlayer placer = Bukkit.getOfflinePlayer(bountyData.getPlacerId());
+
+        // Remove the bounty from memory and storage
+        EconomyUtils.deposit(placer, bountyData.getPlacersMap().get(placer.getUniqueId()));
+        activeBounties.remove(uuid);
+        plugin.getStorageManager().getBountyStorage().removeBounty(uuid);
+        plugin.getLogger().info("The bounty on " + Bukkit.getOfflinePlayer(uuid).getName() + " has expired.");
     }
 
 

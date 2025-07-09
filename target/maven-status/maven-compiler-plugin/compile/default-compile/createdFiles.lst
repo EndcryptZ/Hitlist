@@ -1,6 +1,8 @@
 com\endcrypt\hitlist\config\gui\main\buttons\ActiveBountiesButtonConfig.class
 com\endcrypt\hitlist\gui\bounty\ActiveBountiesGUI.class
 com\endcrypt\hitlist\config\gui\place\buttons\PlayerButtonConfig.class
+com\endcrypt\hitlist\player\PlayerManager.class
+com\endcrypt\hitlist\leaderboard\LeaderboardManager.class
 com\endcrypt\hitlist\config\ConfigEnum.class
 com\endcrypt\hitlist\config\gui\main\buttons\PlaceBountyButtonConfig.class
 com\endcrypt\hitlist\gui\bounty\BountyAmountAnvilGUI.class
@@ -20,11 +22,13 @@ com\endcrypt\hitlist\config\gui\active\ActiveBountiesConfig.class
 com\endcrypt\hitlist\player\PlayerData.class
 com\endcrypt\hitlist\utils\ColorUtils.class
 com\endcrypt\hitlist\config\ConfigManager.class
+com\endcrypt\hitlist\player\PlayerListener.class
 com\endcrypt\hitlist\config\gui\place\PlaceBountyConfig.class
 com\endcrypt\hitlist\utils\ItemUtils.class
 com\endcrypt\hitlist\gui\bounty\ActiveBountiesGUI$1.class
 com\endcrypt\hitlist\bounty\BountyManager.class
 com\endcrypt\hitlist\storage\StorageManager.class
+com\endcrypt\hitlist\bounty\BountyTask.class
 com\endcrypt\hitlist\storage\PlayerStorage.class
 com\endcrypt\hitlist\gui\SortType.class
 com\endcrypt\hitlist\commands\arg\BountyTargetArgument.class

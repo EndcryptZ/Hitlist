@@ -1,6 +1,5 @@
 package com.endcrypt.hitlist.config;
 
-import com.endcrypt.hitlist.bounty.BountyData;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.ChatColor;
@@ -84,6 +83,10 @@ public class MessagesConfig {
                 "%target%", target,
                 "%amount%", amount,
                 "%new_amount%", newAmount);
+    }
+
+    public String getBountyClaim(String target, double amount) {
+        return format(getString(ConfigEnum.MESSAGE_BOUNTY_CLAIM), "%target%", target, "%amount%", amount);
     }
 
     public String getErrorMaxAmount(String maxAmount) {

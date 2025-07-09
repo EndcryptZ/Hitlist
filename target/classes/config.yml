@@ -12,6 +12,7 @@ bounty:
     time: 7d # 7 days; supports h/m/s/d notation
   anonymous:
     enabled: true
+  claim-own-bounty: false
 
 # === Player Opting-In/Out Settings ===
 

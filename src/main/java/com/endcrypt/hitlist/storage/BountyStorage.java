@@ -2,8 +2,6 @@
 package com.endcrypt.hitlist.storage;
 
 import com.endcrypt.hitlist.bounty.BountyData;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -68,7 +66,10 @@ public class BountyStorage {
                 placersMap.put(placerUuid, placerAmount);
             }
 
-            return new BountyData(targetId, placerId, placersMap, amount, anonymous);
+            BountyData bountyData = new BountyData(targetId, placerId, placersMap, amount, anonymous);
+            bountyData.setPlacementTime(config.getLong(path + ".placementTime"));
+
+            return bountyData;
         } catch (IllegalArgumentException e) {
             logger.log(Level.WARNING, "Failed to load bounty for target " + targetId, e);
             return null;

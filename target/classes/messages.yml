@@ -10,6 +10,7 @@ messages:
   bounty-expired: "&eThe bounty on %target% has expired."
   bounty-remove: "&aThe bounty on %target% has been removed."
   bounty-lower: "&aYou've lowered the bounty on %target% by $%amount%! New total: $%new_amount%"
+  bounty-claim: "&aYou’ve claimed the bounty on &e%target% &aworth &a$%amount%!"
 
 # === Error Messages ===
   error-max-amount: "&cYou can't place a bounty higher than $%max_amount%!"

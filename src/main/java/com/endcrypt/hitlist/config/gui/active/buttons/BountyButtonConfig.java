@@ -26,7 +26,7 @@ public class BountyButtonConfig {
         String[] processed = new String[lore.length];
         for (int i = 0; i < lore.length; i++) {
             String placeholder = bountyData != null ? String.valueOf(bountyData.getAmount()) : "0";
-            String placerName = bountyData != null ? Bukkit.getOfflinePlayer(bountyData.getPlacerId()).getName() : "Unknown";
+            String placerName = !bountyData.isAnonymous() ? Bukkit.getOfflinePlayer(bountyData.getPlacerId()).getName() : "Anonymous";
             String expiry = DateUtils.getRelativeTime(bountyData.getPlacementTime() + plugin.getConfigManager().getMain().getExpirationTimeMillis());
             processed[i] = lore[i]
                     .replace("%target%", playerName)

@@ -73,6 +73,8 @@ public class MainConfig {
         return config.getBoolean(ConfigEnum.BOUNTY_ANONYMOUS_ENABLED.getPath());
     }
 
+    public boolean isClaimOwnBountyEnabled() { return config.getBoolean(ConfigEnum.BOUNTY_CLAIM_OWN_BOUNTY.getPath()); }
+
     // === Player Opt-In Settings ===
     public String getOptInCooldownTime() {
         return config.getString(ConfigEnum.OPT_IN_COOLDOWN_TIME.getPath());

@@ -47,6 +47,15 @@ public class BountyCommand {
                                 .withArguments(new BountyTargetArgument())
                                 .withArguments(new DoubleArgument("amount"))
                                 .executesPlayer(this::lower)))
+
+                .withSubcommand(new CommandAPICommand("top")
+                        .withSubcommand(new CommandAPICommand("claimed_bounties")
+                                .withArguments(new IntegerArgument("page", 1).setOptional(true))
+                                .executesPlayer(this::topClaimedBounties))
+                        .withSubcommand(new CommandAPICommand("placed_bounties")
+                                .withArguments(new IntegerArgument("page", 1).setOptional(true))
+                                .executesPlayer(this::topPlacedBounties)))
+
                 .register();
     }
 
@@ -122,5 +131,83 @@ public class BountyCommand {
 
         plugin.getBountyManager().lowerBounty(target, (Player) commandSender, amount);
 
+    }
+
+    private void topClaimedBounties(CommandSender commandSender, CommandArguments args) {
+        int page = (int) args.getOptional("page").orElse(1);
+        Map<UUID, Double> claimedBounties = plugin.getLeaderboardManager().getTopClaimedBounties();
+
+        int totalCount = claimedBounties.size();
+        int totalPages = (int) Math.ceil(totalCount / 10.0);
+
+        if (page > totalPages) {
+            commandSender.sendMessage("§cPage " + page + " does not exist. Total pages: " + totalPages);
+            return;
+        }
+
+        // Calculate start and end indices for the current page
+        int startIndex = (page - 1) * 10;
+        int endIndex = Math.min(startIndex + 10, totalCount);
+
+        commandSender.sendMessage("§6Top Claimed Bounties (Page " + page + "/" + totalPages + "):");
+        commandSender.sendMessage("§7----------------------------------------");
+
+        // Convert map entries to list for easier pagination
+        List<Map.Entry<UUID, Double>> bountyList = new ArrayList<>(claimedBounties.entrySet());
+        bountyList.sort((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()));
+
+        for (int i = startIndex; i < endIndex; i++) {
+            Map.Entry<UUID, Double> entry = bountyList.get(i);
+            UUID target = entry.getKey();
+            Double amount = entry.getValue();
+
+            commandSender.sendMessage(ColorUtils.color("<yellow><placer> <gray>- <gold>$<amount>",
+                    Placeholder.parsed("placer", Bukkit.getOfflinePlayer(target).getName()),
+                    Placeholder.parsed("amount", String.valueOf(amount))));
+        }
+
+        commandSender.sendMessage("§7----------------------------------------");
+        if (page < totalPages) {
+            commandSender.sendMessage("§7Use §e/bounty top claimed_bounties " + (page + 1) + " §7to see the next page");
+        }
+    }
+
+    private void topPlacedBounties(CommandSender commandSender, CommandArguments args) {
+        int page = (int) args.getOptional("page").orElse(1);
+        Map<UUID, Double> placedBounties = plugin.getLeaderboardManager().getTopPlacedBounties();
+
+        int totalCount = placedBounties.size();
+        int totalPages = (int) Math.ceil(totalCount / 10.0);
+
+        if (page > totalPages) {
+            commandSender.sendMessage("§cPage " + page + " does not exist. Total pages: " + totalPages);
+            return;
+        }
+
+        // Calculate start and end indices for the current page
+        int startIndex = (page - 1) * 10;
+        int endIndex = Math.min(startIndex + 10, totalCount);
+
+        commandSender.sendMessage("§6Top Placed Bounties (Page " + page + "/" + totalPages + "):");
+        commandSender.sendMessage("§7----------------------------------------");
+
+        // Convert map entries to list for easier pagination
+        List<Map.Entry<UUID, Double>> bountyList = new ArrayList<>(placedBounties.entrySet());
+        bountyList.sort((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()));
+
+        for (int i = startIndex; i < endIndex; i++) {
+            Map.Entry<UUID, Double> entry = bountyList.get(i);
+            UUID target = entry.getKey();
+            Double amount = entry.getValue();
+
+            commandSender.sendMessage(ColorUtils.color("<yellow><placer> <gray>- <gold>$<amount>",
+                    Placeholder.parsed("placer", Bukkit.getOfflinePlayer(target).getName()),
+                    Placeholder.parsed("amount", String.valueOf(amount))));
+        }
+
+        commandSender.sendMessage("§7----------------------------------------");
+        if (page < totalPages) {
+            commandSender.sendMessage("§7Use §e/bounty top placed_bounties " + (page + 1) + " §7to see the next page");
+        }
     }
 }
