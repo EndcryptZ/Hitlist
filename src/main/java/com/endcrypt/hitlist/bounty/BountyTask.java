@@ -14,6 +14,7 @@ public class BountyTask {
         run();
     }
 
+    // Handles checking of bounties every 100 ticks (5 secs)
     private void run() {
         Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             // Copy keys first to avoid concurrent modification
@@ -24,10 +25,13 @@ public class BountyTask {
         }, 20L, 100L);
     }
 
+    // Handles expiration of bounties
     private void checkBounty(UUID uuid) {
         BountyData bountyData = plugin.getBountyManager().getActiveBounties().get(uuid);
+        if (bountyData == null) return; // avoid null pointer
+
         long expirationTimeMillis = bountyData.getPlacementTime() + plugin.getConfigManager().getMain().getExpirationTimeMillis();
-        if (expirationTimeMillis < System.currentTimeMillis()) {
+        if (System.currentTimeMillis() > expirationTimeMillis) {
             plugin.getBountyManager().expireBounty(uuid);
         }
     }

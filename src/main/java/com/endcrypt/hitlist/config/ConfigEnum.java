@@ -34,6 +34,9 @@ public enum ConfigEnum {
     STAFF_CAN_REMOVE_BOUNTIES("staff.can-remove-bounties"),
     STAFF_REFUND_ON_REMOVAL("staff.refund-on-removal"),
 
+    // Leaderboards Settings
+    LEADERBOARDS_REFRESH_INTERVAL("leaderboards.refresh-interval"),
+
     // Economy Settings
     ECONOMY_PLUGIN("economy.plugin"),
     ECONOMY_INTEGRATION_ENABLED("economy.integration-enabled"),

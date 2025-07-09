@@ -5,6 +5,7 @@ com\endcrypt\hitlist\player\PlayerManager.class
 com\endcrypt\hitlist\leaderboard\LeaderboardManager.class
 com\endcrypt\hitlist\config\ConfigEnum.class
 com\endcrypt\hitlist\config\gui\main\buttons\PlaceBountyButtonConfig.class
+com\endcrypt\hitlist\leaderboard\LeaderboardTask.class
 com\endcrypt\hitlist\gui\bounty\BountyAmountAnvilGUI.class
 com\endcrypt\hitlist\config\gui\place\buttons\SortButtonConfig.class
 com\endcrypt\hitlist\storage\BountyStorage.class

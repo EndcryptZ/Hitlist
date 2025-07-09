@@ -125,6 +125,13 @@ public class MainConfig {
         return config.getBoolean(ConfigEnum.STAFF_CAN_REMOVE_BOUNTIES.getPath());
     }
 
+    // === Leaderboards Settings
+    public String getLeaderboardsRefreshInterval() {
+        return config.getString(ConfigEnum.LEADERBOARDS_REFRESH_INTERVAL.getPath());
+    }
+
+    public long getLeaderboardsRefreshIntervalMillis() { return TimeUtils.parseTime(getLeaderboardsRefreshInterval()); }
+
     public boolean isRefundOnRemovalEnabled() {
         return config.getBoolean(ConfigEnum.STAFF_REFUND_ON_REMOVAL.getPath());
     }

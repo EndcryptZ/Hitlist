@@ -42,6 +42,10 @@ staff:
   can-edit-bounties: true # Permission: hitlist.bounty.edit.others
   refund-on-removal: true
 
+# === Leaderboards Settings ===
+leaderboards:
+  refresh-interval: 5m # 5 minutes
+
 # === Economy ===
 economy:
   plugin: Vault

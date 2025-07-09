@@ -3,6 +3,7 @@ package com.endcrypt.hitlist.player;
 import com.endcrypt.hitlist.HitlistPlugin;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -40,5 +41,17 @@ public class PlayerManager {
     public void saveAllPlayers() {
         playerDataMap.forEach((uuid, playerData) -> plugin.getStorageManager().getPlayerStorage().savePlayer(playerData));
         plugin.getLogger().info("Saved " + playerDataMap.size() + " player data.");
+    }
+
+    public void modifyPlacedBounty(UUID uniqueId, double amount) {
+        if(playerDataMap.containsKey(uniqueId)) {
+            PlayerData playerData = playerDataMap.get(uniqueId);
+            playerData.setTotalPlacedBounty(playerData.getTotalPlacedBounty() + amount);
+            playerDataMap.put(uniqueId, playerData);
+            return;
+        }
+
+        plugin.getStorageManager().getPlayerStorage().modifyPlacedBounty(uniqueId, amount);
+
     }
 }

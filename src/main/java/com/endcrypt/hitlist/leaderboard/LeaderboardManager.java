@@ -18,6 +18,7 @@ public class LeaderboardManager {
 
     public LeaderboardManager() {
         loadLeaderboards();
+        new LeaderboardTask();
     }
 
     public void loadLeaderboards() {
@@ -26,6 +27,6 @@ public class LeaderboardManager {
             TopClaimedBounties.put(playerData.getUniqueId(), playerData.getTotalClaimedBounty());
             TopPlacedBounties.put(playerData.getUniqueId(), playerData.getTotalPlacedBounty());
         });
-        plugin.getLogger().info("Loaded leaderboards.");
+        plugin.getLogger().info("Refreshing leaderboards...");
     }
 }

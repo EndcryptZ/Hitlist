@@ -238,18 +238,20 @@ public class BountyManager {
 
         BountyData bountyData = activeBounties.get(target.getUniqueId());
 
-        if(bountyData.getPlacerId().equals(player.getUniqueId()) && plugin.getConfigManager().getMain().isClaimOwnBountyEnabled()) {
+        if(bountyData.getPlacerId().equals(player.getUniqueId()) && !plugin.getConfigManager().getMain().isClaimOwnBountyEnabled()) {
             return;
         }
 
         PlayerData playerData = plugin.getPlayerManager().getPlayerData(player);
         double amount = bountyData.getAmount();
+        UUID placerId = bountyData.getPlacerId();
 
         activeBounties.remove(target.getUniqueId());
         plugin.getStorageManager().getBountyStorage().removeBounty(target.getUniqueId());
         EconomyUtils.deposit(player, amount);
         playerData.setTotalClaimedBounty(amount + playerData.getTotalClaimedBounty());
         plugin.getPlayerManager().getPlayerDataMap().put(player.getUniqueId(), playerData);
+        plugin.getPlayerManager().modifyPlacedBounty(placerId, amount);
         plugin.sendMessage(player, plugin.getConfigManager().getMessages().getBountyClaim(target.getName(), amount));
 
     }

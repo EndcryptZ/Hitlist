@@ -42,6 +42,16 @@ public class PlayerStorage {
         save();
     }
 
+    public void modifyPlacedBounty(UUID uniqueId, double amount) {
+        String path = uniqueId.toString();
+        if (!config.contains(path)) {
+            return;
+        }
+
+        config.set(path + ".totalPlacedBounty", config.getDouble(path + ".totalPlacedBounty") + amount);
+        save();
+    }
+
     public PlayerData loadPlayer(UUID uniqueId) {
         String path = uniqueId.toString();
         PlayerData playerData = new PlayerData(uniqueId);
