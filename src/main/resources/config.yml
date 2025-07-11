@@ -27,15 +27,13 @@ opt-out:
     time: 30d
     count-only-while-online: true
 
-# === Claim Settings ===
-claim:
-  cooldown:
-    enabled: true
-    time: 10s # Prevent spam
-
 # === Player Head Drop ===
 head-drop:
   enabled: true
+  item:
+    name: "&e%player%'s Head"
+    lore:
+      - "&eClaimed by &4%killer% &efor &a$%amount%"
 
 # === Staff Settings ===
 staff:

@@ -1,10 +1,13 @@
 package com.endcrypt.hitlist.player;
 
 import com.endcrypt.hitlist.HitlistPlugin;
+import com.samjakob.spigui.item.ItemBuilder;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,5 +56,21 @@ public class PlayerManager {
 
         plugin.getStorageManager().getPlayerStorage().modifyPlacedBounty(uniqueId, amount);
 
+    }
+
+    public void dropHead(Player player, Player killer, double amount) {
+        ItemStack head = new ItemBuilder(Material.PLAYER_HEAD)
+                .name(plugin.getConfigManager().getMain().getHeadDropItemName(player.getName(), killer.getName(), String.valueOf(amount)))
+                .lore(plugin.getConfigManager().getMain().getHeadDropItemLore(player.getName(), killer.getName(), String.valueOf(amount)))
+                .build();
+
+        SkullMeta meta = (SkullMeta) head.getItemMeta();
+
+        if (meta != null) {
+            meta.setOwningPlayer(player); // works for online and offline players
+            head.setItemMeta(meta);
+        }
+
+        player.getWorld().dropItem(player.getLocation(), head);
     }
 }

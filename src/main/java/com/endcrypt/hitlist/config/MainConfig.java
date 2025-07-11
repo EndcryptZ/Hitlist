@@ -4,6 +4,8 @@ package com.endcrypt.hitlist.config;
 import com.endcrypt.hitlist.utils.TimeUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.Objects;
+
 public class MainConfig {
     private final FileConfiguration config;
 
@@ -17,7 +19,6 @@ public class MainConfig {
         validateTimeFormat(getExpirationTime(), "Expiration time");
         validateTimeFormat(getOptInCooldownTime(), "Opt-in cooldown time");
         validateTimeFormat(getOptOutCooldownTime(), "Opt-out cooldown time");
-        validateTimeFormat(getClaimCooldownTime(), "Claim cooldown time");
 
         // Validate numerical values
         if (getMinBountyAmount() < 0) {
@@ -102,22 +103,23 @@ public class MainConfig {
         return config.getBoolean(ConfigEnum.OPT_OUT_COOLDOWN_COUNT_ONLINE.getPath());
     }
 
-    // === Claim Settings ===
-    public boolean isClaimCooldownEnabled() {
-        return config.getBoolean(ConfigEnum.CLAIM_COOLDOWN_ENABLED.getPath());
-    }
-
-    public String getClaimCooldownTime() {
-        return config.getString(ConfigEnum.CLAIM_COOLDOWN_TIME.getPath());
-    }
-
-    public long getClaimCooldownTimeMillis() {
-        return TimeUtils.parseTime(getClaimCooldownTime());
-    }
-
     // === Head Drop Settings ===
     public boolean isHeadDropEnabled() {
         return config.getBoolean(ConfigEnum.HEAD_DROP_ENABLED.getPath());
+    }
+    public String getHeadDropItemName(String playerName, String killerName, String amount) {
+        return Objects.requireNonNull(config.getString(ConfigEnum.HEAD_DROP_ITEM_NAME.getPath())).replace("%player%", playerName).replace("%killer%", killerName).replace("%amount%", amount) ;
+    }
+    public String[] getHeadDropItemLore(String playerName, String killerName, String amount) {
+        String[] lore = config.getStringList(ConfigEnum.HEAD_DROP_ITEM_LORE.getPath()).toArray(new String[0]);
+        String[] processed = new String[lore.length];
+        for (int i = 0; i < lore.length; i++) {
+            processed[i] = lore[i]
+                    .replace("%player%", playerName)
+                    .replace("%killer%", killerName)
+                    .replace("%amount%", amount);
+        }
+        return processed;
     }
 
     // === Staff Settings ===

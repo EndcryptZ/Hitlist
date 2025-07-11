@@ -250,6 +250,7 @@ public class BountyManager {
         plugin.getStorageManager().getBountyStorage().removeBounty(target.getUniqueId());
         EconomyUtils.deposit(player, amount);
         playerData.setTotalClaimedBounty(amount + playerData.getTotalClaimedBounty());
+        plugin.getPlayerManager().dropHead(player, target, amount);
         plugin.getPlayerManager().getPlayerDataMap().put(player.getUniqueId(), playerData);
         plugin.getPlayerManager().modifyPlacedBounty(placerId, amount);
         plugin.sendMessage(player, plugin.getConfigManager().getMessages().getBountyClaim(target.getName(), amount));

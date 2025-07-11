@@ -23,12 +23,10 @@ public enum ConfigEnum {
     OPT_OUT_COOLDOWN_TIME("opt-out.cooldown.time"),
     OPT_OUT_COOLDOWN_COUNT_ONLINE("opt-out.cooldown.count-only-while-online"),
 
-    // Claim Settings
-    CLAIM_COOLDOWN_ENABLED("claim.cooldown.enabled"),
-    CLAIM_COOLDOWN_TIME("claim.cooldown.time"),
-
     // Head Drop Settings
     HEAD_DROP_ENABLED("head-drop.enabled"),
+    HEAD_DROP_ITEM_NAME("head-drop.item.name"),
+    HEAD_DROP_ITEM_LORE("head-drop.item.lore"),
 
     // Staff Settings
     STAFF_CAN_REMOVE_BOUNTIES("staff.can-remove-bounties"),
