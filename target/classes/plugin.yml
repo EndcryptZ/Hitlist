@@ -1,4 +1,0 @@
-name: Hitlist
-version: '1.0-SNAPSHOT'
-main: com.endcrypt.hitlist.HitlistPlugin
-api-version: '1.21'
