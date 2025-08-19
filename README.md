@@ -18,7 +18,7 @@
 
 1. Download the latest release of Hitlist.
 2. Place the `.jar` file into your server's `plugins` directory.
-3. Start or restart your PaperMC server.
+3. Start or restart your PaperMC/Spigot server.
 4. Configure the plugin to suit your server's rules and economy via the generated configuration files.
 
 ---
