@@ -1,6 +1,6 @@
 # Hitlist
 
-**Hitlist** is a fully featured bounty plugin designed for [PaperMC](https://papermc.io/) Minecraft servers. This plugin allows players to place assassination-style bounties on others with a strong emphasis on economy integration, custom rules, and a sleek GUI-based experience. It's ideal for survival, factions, and PvP servers that want to encourage player-driven conflict and innovative reward systems.
+**Hitlist** is a fully featured bounty plugin designed for [PaperMC](https://papermc.io/)/[Spigot](https://www.spigotmc.org/) Minecraft servers. This plugin allows players to place assassination-style bounties on others with a strong emphasis on economy integration, custom rules, and a sleek GUI-based experience. It's ideal for survival, factions, and PvP servers that want to encourage player-driven conflict and innovative reward systems.
 
 ---
 
