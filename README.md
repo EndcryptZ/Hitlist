@@ -46,7 +46,7 @@ After installing, a configuration file will be generated in your plugins folder.
 
 - **Minecraft Server:** PaperMC (recommended version matching your plugin release)
 - **Java:** Latest recommended version for PaperMC
-- **Economy Plugin:** (Optional) For reward payouts (e.g., Vault)
+- **Economy Plugin:** For reward payouts (e.g., EssentialsX)
 
 ---
 
