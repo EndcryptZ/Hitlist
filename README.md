@@ -58,7 +58,7 @@ If you encounter issues or need help with configuration, please open an issue on
 
 ## License
 
-*No license file specified. Please contact the repository owner for licensing details.*
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 ---
 
