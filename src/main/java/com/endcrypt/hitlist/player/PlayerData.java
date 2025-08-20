@@ -14,6 +14,7 @@ public class PlayerData {
     double totalClaimedBounty = 0;
     double totalPlacedBounty = 0;
     long optCooldown = 0;
+    long lastCooldownUpdate = 0;
 
     public PlayerData(UUID uniqueId) {
         this.uniqueId = uniqueId;
