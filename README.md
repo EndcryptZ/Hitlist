@@ -86,6 +86,23 @@ Reloads all Hitlist plugin configuration files without restarting the server.
   
 ---
 
+## Permissions
+
+### Bounty Permissions
+
+- **`hitlist.bounty.edit.others`**  
+Allows a player to edit or remove bounties placed by other players.
+
+- **`hitlist.bounty.place.limit`**  
+Allows a player to bypass or set limits on how many bounties they can place.
+
+### Command Permissions
+
+- **`hitlist.cmd.reload`**  
+Allows a player or admin to reload all Hitlist plugin configuration files without restarting the server.
+
+---
+
 ## Requirements
 
 - **Minecraft Server:** PaperMC (recommended version matching your plugin release)
