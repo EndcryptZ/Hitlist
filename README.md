@@ -12,7 +12,8 @@
 - **GUI Experience:** Intuitive graphical user interfaces make placing and claiming bounties easy for everyone.
 - **Suitable for PvP & Factions:** Boosts player engagement and competition in PvP-centric environments.
 
-- ### Opt-In / Opt-Out System
+  
+### Opt-In / Opt-Out System
 
 Players have control over whether they can be targeted by bounties:
 
