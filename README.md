@@ -94,7 +94,7 @@ Reloads all Hitlist plugin configuration files without restarting the server.
 - **`hitlist.bounty.edit.others`**  
 Allows a player to edit or remove bounties placed by other players.
 
-- **`hitlist.bounty.place.limit`**  
+- **`hitlist.bounty.place.limit.<number>`**  
 Allows a player to bypass or set limits on how many bounties they can place.
 
 ### Command Permissions
