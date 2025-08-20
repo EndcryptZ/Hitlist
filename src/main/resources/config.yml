@@ -6,7 +6,7 @@ bounty:
     enabled: true
     amount: 50.0
   stacking:
-    enabled: true
+    enabled: true # true: Allows players to add onto an existing bounty, increasing its total amount
   expiration:
     enabled: true
     time: 7d # 7 days; supports h/m/s/d notation
