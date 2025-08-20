@@ -34,7 +34,7 @@ Players have control over whether they can be targeted by bounties:
 
 ## Usage
 
-- **Placing a Bounty:** Use the `/hitlist` command or interact with the bounty GUI to place a bounty on another player.
+- **Placing a Bounty:** Use the `/bounty` command or interact with the bounty GUI to place a bounty on another player.
 - **Claiming a Bounty:** Fulfill the bounty's conditions (usually defeating the target) to claim the reward.
 - **Admin Controls:** Server admins can adjust bounty settings, view active bounties, and manage economy integration.
 
