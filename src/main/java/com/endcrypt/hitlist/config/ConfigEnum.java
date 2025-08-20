@@ -56,6 +56,9 @@ public enum ConfigEnum {
     ERROR_MESSAGE_NOT_ENOUGH_MONEY("messages.error-not-enough-money"),
     ERROR_MESSAGE_NOT_ENOUGH_PLACED_MONEY("messages.error-not-enough-placed-money"),
     ERROR_MESSAGE_MAX_BOUNTIES_LIMIT("messages.error-max-bounties-limit"),
+    ERROR_OPT_COOLDOWN("messages.error-opt-cooldown"),
+    ERROR_ALREADY_OPTED_IN("messages.error-already-opted-in"),
+    ERROR_ALREADY_OPTED_OUT("messages.error-already-opted-out"),
 
     // Permission Messages
     NO_PERMISSION_MESSAGE_BOUNTY_EDIT_OTHERS("messages.no-permission-bounty-edit-others"),
