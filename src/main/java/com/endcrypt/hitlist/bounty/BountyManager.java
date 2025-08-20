@@ -10,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 @Getter
@@ -148,34 +149,38 @@ public class BountyManager {
      * Optionally refunds the bounty amount based on config.
      *
      * @param target The player who has the bounty.
-     * @param canceller The player attempting to remove the bounty.
+     * @param canceller The player attempting to remove the bounty, or null if removed automatically.
      */
-    public void removeBounty(OfflinePlayer target, Player canceller) {
+    public void removeBounty(OfflinePlayer target, @Nullable Player canceller) {
         // Retrieve bounty data associated with the target
         BountyData bountyData = activeBounties.get(target.getUniqueId());
+        if (bountyData == null) return; // No bounty to remove
 
         // Get the original placer of the bounty
         OfflinePlayer placer = Bukkit.getOfflinePlayer(bountyData.getPlacerId());
 
-        // Check if the canceller has permission to remove bounties placed by others
-        boolean isCancellerPlacer = placer.getUniqueId().equals(canceller.getUniqueId());
-        if (!canceller.hasPermission(PermissionsEnum.PERMISSION_BOUNTY_EDIT_OTHERS.getPermission()) && !isCancellerPlacer) {
-            plugin.sendMessage(canceller, plugin.getConfigManager().getMessages().getNoPermissionBountyEditOthers());
-            return;
+        // If a canceller is provided, check permission
+        if (canceller != null) {
+            boolean isCancellerPlacer = placer.getUniqueId().equals(canceller.getUniqueId());
+            if (!canceller.hasPermission(PermissionsEnum.PERMISSION_BOUNTY_EDIT_OTHERS.getPermission()) && !isCancellerPlacer) {
+                plugin.sendMessage(canceller, plugin.getConfigManager().getMessages().getNoPermissionBountyEditOthers());
+                return;
+            }
+
+            // Notify the canceller
+            plugin.commandSenderMessage(canceller, plugin.getConfigManager().getMessages().getBountyRemove(target.getName()));
         }
 
         // Remove the bounty from memory and storage
         activeBounties.remove(target.getUniqueId());
         plugin.getStorageManager().getBountyStorage().removeBounty(target.getUniqueId());
 
-        // Notify the canceller
-        plugin.commandSenderMessage(canceller, plugin.getConfigManager().getMessages().getBountyRemove(target.getName()));
-
         // Refund the bounty to the placer if refunding is enabled
         if (plugin.getConfigManager().getMain().isRefundOnRemovalEnabled()) {
             EconomyUtils.deposit(placer, bountyData.getPlacersMap().get(placer.getUniqueId()));
         }
     }
+
 
     /**
      * Lowers the bounty amount on a target player.
