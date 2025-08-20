@@ -49,10 +49,10 @@ public class BountyCommand {
                                 .executesPlayer(this::lower)))
 
                 .withSubcommand(new CommandAPICommand("top")
-                        .withSubcommand(new CommandAPICommand("claimed_bounties")
+                        .withSubcommand(new CommandAPICommand("claimed")
                                 .withArguments(new IntegerArgument("page", 1).setOptional(true))
                                 .executesPlayer(this::topClaimedBounties))
-                        .withSubcommand(new CommandAPICommand("placed_bounties")
+                        .withSubcommand(new CommandAPICommand("placed")
                                 .withArguments(new IntegerArgument("page", 1).setOptional(true))
                                 .executesPlayer(this::topPlacedBounties)))
 
