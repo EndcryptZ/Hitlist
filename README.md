@@ -18,7 +18,7 @@ Players have control over whether they can be targeted by bounties:
 
 - **Opt-In:** Players who opt-in can be placed on the Hitlist and receive bounties.  
 - **Opt-Out:** Players who opt-out cannot be targeted by bounties, keeping them safe from assassination-style gameplay.  
-- **Command Example:** `/hitlist optin` to allow bounties, `/hitlist optout` to prevent bounties.  
+- **Command Example:** `/bounty opt-in` to allow bounties, `/bounty opt-out` to prevent bounties.  
 
 ---
 
