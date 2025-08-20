@@ -3,7 +3,9 @@ package com.endcrypt.hitlist.commands;
 import com.endcrypt.hitlist.HitlistPlugin;
 import com.endcrypt.hitlist.bounty.BountyData;
 import com.endcrypt.hitlist.commands.arg.BountyTargetArgument;
+import com.endcrypt.hitlist.player.PlayerData;
 import com.endcrypt.hitlist.utils.ColorUtils;
+import com.endcrypt.hitlist.utils.TimeUtils;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.DoubleArgument;
 import dev.jorel.commandapi.arguments.EntitySelectorArgument;
@@ -55,6 +57,12 @@ public class BountyCommand {
                         .withSubcommand(new CommandAPICommand("placed")
                                 .withArguments(new IntegerArgument("page", 1).setOptional(true))
                                 .executesPlayer(this::topPlacedBounties)))
+
+                .withSubcommand(new CommandAPICommand("opt-in")
+                        .executesPlayer(this::optIn))
+
+                .withSubcommand(new CommandAPICommand("opt-out")
+                        .executesPlayer(this::optOut))
 
                 .register();
     }
@@ -209,5 +217,55 @@ public class BountyCommand {
         if (page < totalPages) {
             commandSender.sendMessage("§7Use §e/bounty top placed_bounties " + (page + 1) + " §7to see the next page");
         }
+    }
+
+    private void optIn(CommandSender commandSender, CommandArguments args) {
+        Player player = (Player) commandSender;
+        PlayerData playerData = plugin.getPlayerManager().getPlayerData(player);
+
+        long lastLogin = player.getLastLogin();
+        long optCooldown = playerData.getOptCooldown();
+        long now = System.currentTimeMillis();
+        long timeElapsed = playerData.getLastCooldownUpdate() != 0 ? now - playerData.getLastCooldownUpdate() : now - lastLogin;
+
+        if (!playerData.isOptedOut()) {
+            plugin.sendMessage(player, plugin.getConfigManager().getMessages().getErrorAlreadyOptedIn());
+            return;
+        }
+
+        if (optCooldown > timeElapsed) {
+            plugin.sendMessage(player, plugin.getConfigManager().getMessages().getErrorOptCooldown(optCooldown - timeElapsed));
+            return;
+        }
+
+        plugin.sendMessage(player, plugin.getConfigManager().getMessages().getOptInSuccess());
+        playerData.setOptCooldown(TimeUtils.parseTime(plugin.getConfigManager().getMain().getOptInCooldownTime()));
+        playerData.setLastCooldownUpdate(now);
+        playerData.setOptedOut(false);
+    }
+
+    private void optOut(CommandSender commandSender, CommandArguments args) {
+        Player player = (Player) commandSender;
+        PlayerData playerData = plugin.getPlayerManager().getPlayerData(player);
+
+        long lastLogin = player.getLastLogin();
+        long optCooldown = playerData.getOptCooldown();
+        long now = System.currentTimeMillis();
+        long timeElapsed = playerData.getLastCooldownUpdate() != 0 ? now - playerData.getLastCooldownUpdate() : now - lastLogin;
+
+        if (playerData.isOptedOut()) {
+            plugin.sendMessage(player, plugin.getConfigManager().getMessages().getErrorAlreadyOptedOut());
+            return;
+        }
+
+        if (optCooldown > timeElapsed) {
+            plugin.sendMessage(player, plugin.getConfigManager().getMessages().getErrorOptCooldown(optCooldown - timeElapsed));
+            return;
+        }
+
+        plugin.sendMessage(player, plugin.getConfigManager().getMessages().getOptOutSuccess());
+        playerData.setOptCooldown(TimeUtils.parseTime(plugin.getConfigManager().getMain().getOptOutCooldownTime()));
+        playerData.setLastCooldownUpdate(now);
+        playerData.setOptedOut(true);
     }
 }
