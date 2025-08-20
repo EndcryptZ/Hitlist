@@ -1,5 +1,6 @@
 package com.endcrypt.hitlist.config;
 
+import com.endcrypt.hitlist.utils.TimeUtils;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.ChatColor;
@@ -119,6 +120,19 @@ public class MessagesConfig {
     public String getErrorMaxBountiesLimit(int limit) {
         return format(getString(ConfigEnum.ERROR_MESSAGE_MAX_BOUNTIES_LIMIT),
                 "%limit%", limit);
+    }
+
+    public String getErrorOptCooldown(long cooldown) {
+        return format(getString(ConfigEnum.ERROR_OPT_COOLDOWN),
+                "%cooldown%", TimeUtils.formatDuration(cooldown));
+    }
+
+    public String getErrorAlreadyOptedIn() {
+        return format(getString(ConfigEnum.ERROR_ALREADY_OPTED_IN));
+    }
+
+    public String getErrorAlreadyOptedOut() {
+        return format(getString(ConfigEnum.ERROR_ALREADY_OPTED_OUT));
     }
 
     public String getNoPermissionBountyEditOthers() {

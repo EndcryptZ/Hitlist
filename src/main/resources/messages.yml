@@ -5,7 +5,7 @@ messages:
   bounty-place-stack: "&aYou added $%amount% to the bounty on %target%!"
   bounty-claimed: "&e%killer% claimed the bounty on %target%!"
   opt-in-success: "&aYou have opted in to be a bounty target."
-  opt-out-success: "&cYou have opted out from being a bounty target."
+  opt-out-success: "&aYou have opted out from being a bounty target."
   cooldown-active: "&cYou cannot change your bounty status for %time%."
   bounty-expired: "&eThe bounty on %target% has expired."
   bounty-remove: "&aThe bounty on %target% has been removed."
@@ -20,6 +20,9 @@ messages:
   error-not-enough-money: "&cYou don't have enough money to place this bounty! Required balance: $%required_money%"
   error-not-enough-placed-money: "&cYou haven't placed enough money on this bounty to lower it! You’ve placed: $%placed_money%"
   error-max-bounties-limit: "&cYou've reached your maximum active bounties! Limit: %limit%"
+  error-opt-cooldown: "&cYou can't toggle opt yet! Cooldown remaining: %cooldown%"
+  error-already-opted-in: "&cYou’re already opted in!"
+  error-already-opted-out: "&cYou're already opted out!"
 
 # === Permission Messages ===
   no-permission-bounty-edit-others: "&cYou don't have permission to edit bounties placed by other players!"
