@@ -138,13 +138,4 @@ public class MainConfig {
         return config.getBoolean(ConfigEnum.STAFF_REFUND_ON_REMOVAL.getPath());
     }
 
-    // === Economy Settings ===
-    public String getEconomyPlugin() {
-        return config.getString(ConfigEnum.ECONOMY_PLUGIN.getPath());
-    }
-
-    public boolean isEconomyIntegrationEnabled() {
-        return config.getBoolean(ConfigEnum.ECONOMY_INTEGRATION_ENABLED.getPath());
-    }
-
 }

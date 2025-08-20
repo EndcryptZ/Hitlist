@@ -43,8 +43,3 @@ staff:
 # === Leaderboards Settings ===
 leaderboards:
   refresh-interval: 5m # 5 minutes
-
-# === Economy ===
-economy:
-  plugin: Vault
-  integration-enabled: true

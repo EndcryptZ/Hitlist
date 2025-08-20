@@ -35,10 +35,6 @@ public enum ConfigEnum {
     // Leaderboards Settings
     LEADERBOARDS_REFRESH_INTERVAL("leaderboards.refresh-interval"),
 
-    // Economy Settings
-    ECONOMY_PLUGIN("economy.plugin"),
-    ECONOMY_INTEGRATION_ENABLED("economy.integration-enabled"),
-
     // Messages
     MESSAGE_PREFIX("messages.prefix"),
     MESSAGE_BOUNTY_PLACE("messages.bounty-place"),
