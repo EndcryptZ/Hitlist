@@ -50,6 +50,42 @@ After installing, a configuration file will be generated in your plugins folder.
 
 ---
 
+## Commands
+
+### `/bounty`
+Opens the main bounty GUI for quick access to all bounty features.
+
+### `/bounty place <player> <amount>`
+Place a bounty on a player. The amount will be deducted from the placer and added to the bounty pool.
+
+### `/bounty list [page]`
+View a paginated list of active bounties. Optional `page` argument for navigation.
+
+### `/bounty edit remove <player>`
+Remove an existing bounty from a player (requires permission/admin).
+
+### `/bounty edit lower <player> <amount>`
+Lower the amount of an existing bounty on a player (requires permission/admin).
+
+### `/bounty top claimed [page]`
+View the leaderboard of players with the highest total claimed bounty rewards. Optional `page` argument for pagination.
+
+### `/bounty top placed [page]`
+View the leaderboard of players who have placed the most bounties. Optional `page` argument for pagination.
+
+### `/bounty opt-in`
+Allow yourself to be targeted by bounties (enable participation). Respect cooldowns if configured.
+
+### `/bounty opt-out`
+Prevent yourself from being targeted by bounties (disable participation). Respect cooldowns if configured.
+
+### `/hitlistreload`
+Reloads all Hitlist plugin configuration files without restarting the server.  
+- **Permission:** `hitlist.cmd.reload`  
+- Sends a confirmation message to both players and console.
+  
+---
+
 ## Requirements
 
 - **Minecraft Server:** PaperMC (recommended version matching your plugin release)
