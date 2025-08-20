@@ -20,7 +20,7 @@ auto-opt-out-on-first-join: true # Automatically opts players out of being a bou
 opt-in:
   cooldown:
     time: 30d
-    count-only-while-online: true
+    count-only-while-online: true # true: Only reduce cooldown while player is online
 
 opt-out:
   cooldown:
